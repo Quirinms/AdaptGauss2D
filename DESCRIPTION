@@ -1,0 +1,16 @@
+Package: AdaptGauss2D
+Type: Package
+Title: Gaussian Mixture Modeling in 2D
+Version: 0.2.0
+Date: 2022-05-20
+Authors@R: c(person("Quirin", "Stier", email="q.stier@iap-gmbh.de", role=c("aut", "cre")), person("Alfred", "Ultsch", role=c("ths", "rev")),person("Michael", "Thrun", email= "m.thrun@gmx.net", role=c("ths", "rev","ctb", "cph"), comment = c(ORCID = "0000-0001-9542-5543")))
+Maintainer: Quirin Stier <q.stier@iap-gmbh.de>
+Description: Adapting two-dimensional Gaussian Mixture Models to data with help of interactive visualization and single expectation maximization steps.
+Imports: shiny, shinyjs, shinyWidgets, stats, mvtnorm, mixtools, plotly, DataVisualizations, pracma
+Suggests: FCPS, parallelDist, dbt.DataIO, rstudioapi, colorRamps
+Depends: R (>= 3.5.0)
+License: GPL-3
+LazyLoad: yes
+LazyData: TRUE
+Encoding: UTF-8
+URL: https://www.deepbionics.org

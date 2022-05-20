@@ -1,0 +1,18 @@
+export(AdaptGauss2D)
+export(EstimateNumberOfModes)
+#export(PmatrixColormap)
+
+import("plotly")
+import("shiny")
+importFrom("mvtnorm","dmvnorm")
+import("shinyWidgets")
+
+importFrom("shinyjs", "disable")
+
+#importFrom("dbt.DataIO", "ReadCLS", "WriteCLS", "WriteLRN")
+
+#importFrom("ggplot2", "ggplot")
+importFrom("grDevices", "colorRampPalette")
+importFrom("stats", "na.omit", "sd")
+importFrom("utils", "setTxtProgressBar", "txtProgressBar", "read.delim2", "write.table")
+    importFrom("stats", "cutree", "hclust")
