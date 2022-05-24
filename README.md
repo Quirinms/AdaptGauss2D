@@ -12,13 +12,14 @@ The initial computation on the app start require some time for large datasets, b
 
 ## Application
 
+```R
 library(FCPS)
 load(EngyTime)
 Data = EngyTime$Data
 Cls  = EngyTime$Cls
 
 Res = AdaptDunes(Data, Cls = Cls)
-
+```
 
 
 ## Installation using Github
