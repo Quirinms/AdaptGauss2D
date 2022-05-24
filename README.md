@@ -13,12 +13,13 @@ The initial computation on the app start require some time for large datasets, b
 ## Application
 
 ```R
+library(AdaptGauss2D)
 library(FCPS)
 load(EngyTime)
 Data = EngyTime$Data
 Cls  = EngyTime$Cls
 
-Res = AdaptDunes(Data, Cls = Cls)
+Res = AdaptGauss2D(Data, Cls = Cls)
 ```
 
 
