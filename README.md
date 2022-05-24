@@ -1,9 +1,11 @@
 # AdaptGauss2D
 Adapting two-dimensional Gaussian Mixture Models on data with the help of an interactive visualization and a manual controllable expectation maximization algorithm.
 
-# Practical impact
+### Practical impact
 Experience showed that Expectations Maximization (EM) algorithms do not necessarily yield the "best" options. In the one- or two-dimensional data case EM algorithms oftentimes create models which seem crooked and off when visualized. Therefore, we created an interactive visualization tool, with which you can adapt models to the data both with automatic optimization and with user intervention. The visualization tool and a performance measure (here: root mean square deviation RMSD) enable a feedback for the user. The rich tools offered by the GUI support the user in an intuitive way to cope with the model fitting task.
 
+### Big Data
+The initial computation on the app start require some time for large datasets, but the efficient sampling techniques used for visualization support a comparably fast manual control during app use.
 
 ## Installation using Github
 Please note, that dependecies have to be installed manually.
