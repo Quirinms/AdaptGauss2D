@@ -1,7 +1,7 @@
 # AdaptGauss2D
 Adapting two-dimensional Gaussian Mixture Models on data with the help of an interactive visualization and a manual controllable expectation maximization algorithm.
 
-# R shiny app
+### R shiny app
 The AdaptGauss2D app is a GUI made for an intuitive approach for two-dimensional gaussian mixture modeling (GMM). There is also an approach for the one-dimensional case, called AdaptGauss (https://cran.r-project.org/web/packages/AdaptGauss/AdaptGauss.pdf). The output of the app can be used as input. Be aware, that the principal component axis and the angle are not required, since this information is within the covariance matrices and is only provided in the output as a quick access of the results. The essence of AdaptGauss2D lies in the coarse manual fitting as a first step and a fine automatized fitting with an EM algorithm as the second step. That way the user can communicate a rough expectation of the model which is then optimized. In other words, the user provides a rough desired initialization and the automaton of AdaptGauss2D finds a local optimum for that. AdaptGauss2D yields an initialized solution for a GMM as proposal and start for the user.
 
 ### Practical impact
