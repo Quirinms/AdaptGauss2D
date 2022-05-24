@@ -19,7 +19,7 @@ load(EngyTime)
 Data = EngyTime$Data
 Cls  = EngyTime$Cls
 
-Res = AdaptGauss2D(Data, Cls = Cls)
+Res = AdaptGauss2D(Data = Data, Cls = Cls)
 ```
 
 
