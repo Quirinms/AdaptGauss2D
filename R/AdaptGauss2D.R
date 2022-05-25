@@ -1,4 +1,4 @@
-AdaptDunes = function(Data,
+AdaptGauss2D = function(Data,
                       Means = NULL, CovarianceMatrices = NULL, Weights = NULL,
                       Cls = NULL, Debug = F, dbt = F,
                       WorkingDirectory = getwd()){
@@ -7,9 +7,9 @@ AdaptDunes = function(Data,
   # to a dataset.
   #
   # USAGE
-  # V = AdaptDunes(Data)
-  # V = AdaptDunes(Data, Cls = Cls)
-  # V = AdaptDunes(Data, Means = Means, CovarianceMatrices = CovarianceMatrices,
+  # V = AdaptGauss2D(Data)
+  # V = AdaptGauss2D(Data, Cls = Cls)
+  # V = AdaptGauss2D(Data, Means = Means, CovarianceMatrices = CovarianceMatrices,
   #                Weights = Weights)
   #
   # INPUT

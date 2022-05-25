@@ -1,12 +1,12 @@
-\name{AdaptDunes}
-\alias{AdaptDunes}
+\name{AdaptGauss2D}
+\alias{AdaptGauss2D}
 \title{Adapt a two-dimensional Gaussian Mixture Model}
 \description{
 GUI for manually fitting a multivariate (2 dimensional) gaussian mixture to a
 dataset.
 }
 \usage{
-AdaptDunes(Data, Means = NULL, CovarianceMatrices = NULL, Weights = NULL,
+AdaptGauss2D(Data, Means = NULL, CovarianceMatrices = NULL, Weights = NULL,
 Cls = NULL, Debug = F, dbt = F, WorkingDirectory = getwd())
 }
 \arguments{
@@ -25,7 +25,7 @@ in terminal. F: Show nothing.}
 dbt. F: Hide unnecessary details to keep it simple for a broad audience
 especially from the non computer science community.}
 \item{WorkingDirectory}{Character String (Default=getwd()). Indicates the
-working directory to which to save the setting obtained with AdaptDunes to.}
+working directory to which to save the setting obtained with AdaptGauss2D to.}
 }
 \value{
 List with multiple elements of different data structures:
@@ -42,19 +42,19 @@ principal component ax of the covariance matrix.}
 \item{Cls}{[1:n] Numerical vector of size n containing the classes of each observation.}
 }
 \details{
-The AdaptDunes app is a GUI made for an intuitive approach for two-dimensional
+The AdaptGauss2D app is a GUI made for an intuitive approach for two-dimensional
 gaussian mixture modeling (GMM). There is also an approach for the one-dimensional
 case, called AdaptGauss.
 The output of the app can be used as input. Be aware, that the principal
 component axis and the angle are not required, since this information is
 within the covariance matrices and is only provided in the output as a quick
 access of the results.
-The essence of AdaptDunes lies in the coarse manual fitting as a first step and
+The essence of AdaptGauss2D lies in the coarse manual fitting as a first step and
 a fine automatized fitting with an EM algorithm as the second step.
 That way the user can communicate a rough expectation of the model which is
 then optimized. In other words, the user provides a rough desired initialization
-and the automaton of AdaptDunes finds a local optimum for that.
-AdaptDunes yields an initialized solution for a GMM as proposal and start for
+and the automaton of AdaptGauss2D finds a local optimum for that.
+AdaptGauss2D yields an initialized solution for a GMM as proposal and start for
 the user.
 }
 \author{Quirin Stier}
@@ -64,7 +64,7 @@ data(EngyTime)
 # Call shiny application
 Data=EngyTime$Data
 
-Res = AdaptDunes(Data, Means = NULL, CovarianceMatrices = NULL, Weights = NULL,
+Res = AdaptGauss2D(Data, Means = NULL, CovarianceMatrices = NULL, Weights = NULL,
 Cls = NULL, Debug = F)
 }
 }
