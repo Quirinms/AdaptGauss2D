@@ -30,7 +30,7 @@ matrices of the l GMM components.}
 \item{Weights}{[1:l] Numerical vector with weights for each GMM component.}
 \item{MainAxesAngle}{List of numeric vectors with 1st and 2nd main axes of a 2D
 ellipsoid and the respective angles measured to the first unit vector c(0,1).}
-\item{Colors}{[1:n] Numerical vector of size n containing the colors of each observation.}
+\item{Colors}{[1:l] Character vector with l color names or more.}
 \item{Cls}{[1:n] Numerical vector of size n containing the classes of each observation.}
 \item{Camera}{List of attributes concerning the camera angle for plotly visualizations.}
 \item{ShowScatter}{Boolean (Default=TRUE). T: Show Data Scatter with empirical
@@ -40,8 +40,8 @@ show the markers.}
 \item{AxNames}{[1:2] Character vector with ax names for plot description.}
 \item{Source}{(Default = "F1"). Character indicating plot source. Important attribute for
 plotly in shiny in order to keep control of specific panels.}
-\item{Debug}{Boolean (Default=FALSE). T: Show developer information and warnings
-in terminal. F: Show nothing.}
+\item{Debug}{Boolean (Default=FALSE). TRUE: Show developer information and warnings
+in terminal. FALSE: Show nothing.}
 }
 \value{
 \item{plotOut}{Plotly object containing plot for direct visualization.}

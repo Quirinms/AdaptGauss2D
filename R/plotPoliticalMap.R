@@ -145,13 +145,10 @@ plotPoliticalMap = function(Data, CurrGauss,
 
   df = as.data.frame(cbind(Data, as.vector(Cls)))
   df[,3] = as.factor(df[,3])
-  grid = base::expand.grid(seq(min(df[, 1]), max(df[, 1]), length.out=100),
-                           seq(min(df[, 2]), max(df[, 2]), length.out=100))
+  grid = as.matrix(base::expand.grid(seq(min(df[, 1]), max(df[, 1]), length.out=100),
+                           seq(min(df[, 2]), max(df[, 2]), length.out=100)))
   gDen = sapply(1:length(Means), function(i){       # density for each point and gaussian
-    TmpCovMatrix = Covariances[[i]]
-    TmpMean      = Means[[i]]
-    TmpWeight    = Weights[i]
-    mvtnorm::dmvnorm(x = grid, mean = TmpMean, sigma = TmpCovMatrix) * TmpWeight
+    mixtools::dmvnorm(y = grid, mu = Means[[i]], sigma = Covariances[[i]]) * Weights[i]
   })
   matchingGauss = apply(gDen, 1, which.max)
   plotOut = plotly::plot_ly(data = data.frame(grid),

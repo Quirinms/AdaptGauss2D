@@ -6,21 +6,20 @@ Plot density of two-dimensional data.
 }
 \usage{
 plotDataDensity(Data, Cls, CurrGauss, Colors,
-
 ContinuousDataPDE,Means, Covariances, MainAxesAngle,
-
 XKernel, YKernel, Shapes, ShapeText, AxNames = c("X1", "X2"),
-
 ShowAxis = FALSE, ShowEllipsoids = TRUE, ShowScatter = FALSE,
-
 ShowGaussNr = FALSE, Source = "D")
 }
 \arguments{
 \item{Data}{[1:n, 1:2] Numeric matrix with n observations and 2 features.}
 \item{Cls}{[1:n] Numerical vector of size n containing the classes of each observation.}
-\item{CurrGauss}{...}
-\item{Colors}{...}
-\item{ContinuousDataPDE}{...}
+\item{CurrGauss}{Integer indicating the current selected Gaussian
+component.}
+\item{Colors}{[1:l] Character vector with l color names or more.}
+\item{ContinuousDataPDE}{[1:x, 1:x] Numeric matrix with density estimation of
+Data computed as grid on the domain defined by XKernel and YKernel in order to
+plot a continuous density plot.}
 \item{Means}{List with l [1:2] numerical vector defining the means of the l GMM
 components.}
 \item{Covariances}{List with l [1:2, 1:2] numerical matrices defining the covariance
@@ -35,11 +34,10 @@ for a shape for plotting. Here it is used for plotting an ellipsoid.}
 two-dimensional coordinates and one entry for the number of the Gaussian
 component.}
 \item{AxNames}{[1:2] Character vector with ax names for plot description.}
-\item{ShowAxis}{Boolean indicating ...}
-\item{ShowEllipsoids}{Boolean indicating ...}
-\item{ShowScatter}{Boolean indicating ...}
-\item{ShowGaussNr}{Boolean determining if the shown Gaussian components are
-enumerated (TRUE) or not (FALSE).}
+\item{ShowAxis}{Boolean indicating to show models axis or not.}
+\item{ShowEllipsoids}{Boolean indicating to show models ellipsoids or not.}
+\item{ShowScatter}{Boolean indicating if data scatter is shown or not.}
+\item{ShowGaussNr}{Boolean indicating to enumerate model components.}
 \item{Source}{Character indicating plot source (Default = "D"). Important attribute for
 plotly in shiny in order to keep control of specific panels.}
 }

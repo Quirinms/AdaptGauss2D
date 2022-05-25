@@ -1,4 +1,4 @@
-AdaptGauss2D = function(Data,
+AdaptDunes = function(Data,
                       Means = NULL, CovarianceMatrices = NULL, Weights = NULL,
                       Cls = NULL, Debug = F, dbt = F,
                       WorkingDirectory = getwd()){
@@ -7,9 +7,9 @@ AdaptGauss2D = function(Data,
   # to a dataset.
   #
   # USAGE
-  # V = AdaptGauss2D(Data)
-  # V = AdaptGauss2D(Data, Cls = Cls)
-  # V = AdaptGauss2D(Data, Means = Means, CovarianceMatrices = CovarianceMatrices,
+  # V = AdaptDunes(Data)
+  # V = AdaptDunes(Data, Cls = Cls)
+  # V = AdaptDunes(Data, Means = Means, CovarianceMatrices = CovarianceMatrices,
   #                Weights = Weights)
   #
   # INPUT
@@ -304,7 +304,7 @@ AdaptGauss2D = function(Data,
     SDX       = sd(Data[,FeatureIdx1])
     SDY       = sd(Data[,FeatureIdx2])
     DataSigma = diag(c(SDX, SDY))
-    Fi        = mvtnorm::dmvnorm(x = Data[,c(FeatureIdx1, FeatureIdx2)], mean = DataMean, sigma = DataSigma)
+    Fi        = mixtools::dmvnorm(y = Data[,c(FeatureIdx1, FeatureIdx2)], mu = DataMean, sigma = DataSigma)
     RMSE0     = sqrt(sum((Fi - EmpiricDataPDE)^2))/100
 
     # GMM
@@ -391,7 +391,7 @@ AdaptGauss2D = function(Data,
     values$dataScatter          = TRUE
     values$DotOrGrid            = "Grid Density"
     values$leftPlot             = "Data Estimation"
-    values$leftPlot2            = "Original Classes"
+    values$leftPlot2            = "Orig. Classes"
     values$lastPlotExecution    = Sys.time() - 501
     values$ShowMarkersLeft      = NULL
     values$rightPlot            = 1
@@ -413,6 +413,7 @@ AdaptGauss2D = function(Data,
     befehl$updateClassification   =   0
     befehl$updateEllipsoid        =   0
     befehl$renderRMS              =   0
+    befehl$buttonClasses          =   0
 
     #--------------------------------------------------------------------------#
     #          Global variables
@@ -540,10 +541,10 @@ AdaptGauss2D = function(Data,
 
     output$buttonControlLeft = renderUI({
       buttonControlLeft =
-        fluidRow(style="vertical-align:bottom;",#align:top???
-                 column(6,
+        fluidRow(style="vertical-align:bottom;", #align:top???
+                 column(6, # conditionalPanel
                         fluidRow(actionButton("changeLeftPlot", paste0(values$leftPlot, " (P)"), value = T, width = "100%")),
-                        fluidRow(actionButton("changeLeftPlot2", values$leftPlot2, value = T, width = "100%")),
+                        fluidRow(uiOutput("classButtonLeft")),
                         #fluidRow(checkboxInput("showMarkersLeft", "Show Markers", value = F, width = "100%"))
                  ),
                  column(6,
@@ -552,6 +553,13 @@ AdaptGauss2D = function(Data,
                  ),
         )
       buttonControlLeft
+    })
+
+    output$classButtonLeft <- renderUI({
+      befehl$buttonClasses
+      if(!all(OriginalCls == rep(0, dim(Data)[1]))){
+        actionButton("changeLeftPlot2", values$leftPlot2, value = T, width = "100%")
+      }
     })
 
     output$buttonControlRight = renderUI({
@@ -571,13 +579,18 @@ AdaptGauss2D = function(Data,
                  ),
                  column(3,
                         fluidRow(actionButton("changeRightPlot4", "Classification (P)", value = T, width = "100%")),
-                        fluidRow(actionButton("changeRightCls", values$rightCls,       value = T, width = "100%"))
+                        fluidRow(uiOutput("classButtonRight"))
                  )
         )
       buttonControlRight
     })
 
-
+    output$classButtonRight <- renderUI({
+      befehl$buttonClasses
+      if(!all(OriginalCls == rep(0, dim(Data)[1]))){
+        actionButton("changeRightCls", values$rightCls, value = T, width = "100%")
+      }
+    })
 
 
     output$control = renderUI({
@@ -891,7 +904,7 @@ AdaptGauss2D = function(Data,
           SDX       = sd(Data[,FeatureIdx1])
           SDY       = sd(Data[,FeatureIdx2])
           DataSigma = diag(c(SDX, SDY))
-          Fi        = mvtnorm::dmvnorm(x = Data[,c(FeatureIdx1, FeatureIdx2)], mean = DataMean, sigma = DataSigma)
+          Fi        = mixtools::dmvnorm(y = Data[,c(FeatureIdx1, FeatureIdx2)], mu = DataMean, sigma = DataSigma)
           RMSE0     = sqrt(sum((Fi - EmpiricDataPDE)^2))
 
           BackUpMeans          <<- list()                                         # Backup for undoing results of the EM
@@ -959,7 +972,7 @@ AdaptGauss2D = function(Data,
           SDX       = sd(Data[,FeatureIdx1])
           SDY       = sd(Data[,FeatureIdx2])
           DataSigma = diag(c(SDX, SDY))
-          Fi        = mvtnorm::dmvnorm(x = Data[,c(FeatureIdx1, FeatureIdx2)], mean = DataMean, sigma = DataSigma)
+          Fi        = mixtools::dmvnorm(y = Data[,c(FeatureIdx1, FeatureIdx2)], mu = DataMean, sigma = DataSigma)
           RMSE0     = sqrt(sum((Fi - EmpiricDataPDE)^2))
 
           BackUpMeans          <<- list()                                         # Backup for undoing results of the EM
@@ -1020,7 +1033,7 @@ AdaptGauss2D = function(Data,
 
     # Update Numeric Inputs (e.g., gaussian component was changed)
     observe({
-      #print("AdaptGauss2D: Update Slider for M, S and W")
+      #print("AdaptDunes: Update Slider for M, S and W")
       befehl$updateNumericInputs       #
       befehl$updateCurrGauss    # Gaussian component was updated
       disable("execEM")
@@ -1112,7 +1125,7 @@ AdaptGauss2D = function(Data,
       Control6<<-T
       tmpVar = input$NumericWeight
       #print("Refresh Values for Weights")
-      #print("AdaptGauss2D:Refresh Weights")
+      #print("AdaptDunes:Refresh Weights")
       if(!is.null(tmpVar)){
         if(is.numeric(tmpVar)){
           if((tmpVar > 0) & (tmpVar < 1)){
@@ -1132,7 +1145,7 @@ AdaptGauss2D = function(Data,
       Control6<<-T
       tmpVar = input$NumericMean1
       #print("Refresh Values for Means")
-      #print("AdaptGauss2D:Refresh Means")
+      #print("AdaptDunes:Refresh Means")
       if(!is.null(tmpVar)){
         if(is.numeric(tmpVar)){
           if((tmpVar > LimitMean[1]) & (tmpVar < LimitMean[2])){
@@ -1152,7 +1165,7 @@ AdaptGauss2D = function(Data,
       Control6 <<- T
       tmpVar = input$NumericMean2
       #print("Refresh Values for Means")
-      #print("AdaptGauss2D:Refresh Means")
+      #print("AdaptDunes:Refresh Means")
       if(!is.null(tmpVar)){
         if(is.numeric(tmpVar)){
           if((tmpVar > LimitMean[1]) & (tmpVar < LimitMean[2])){
@@ -1171,7 +1184,7 @@ AdaptGauss2D = function(Data,
     observe({
       tmpVar = input$NumericAngle
       #print("Refresh Values for Angle")
-      #print("AdaptGauss2D:Refresh Angle")
+      #print("AdaptDunes:Refresh Angle")
       if(!is.null(tmpVar)){
         if(is.numeric(tmpVar)){
           if((tmpVar >= LimitAngle[1]) & (tmpVar <= LimitAngle[2])){
@@ -1193,7 +1206,7 @@ AdaptGauss2D = function(Data,
       tmpAxis1 = input$NumericMainAxis1
       disable("execEM")
       #print("Refresh Values for Main Axis 1")
-      #print("AdaptGauss2D:Refresh Main Axis 1")
+      #print("AdaptDunes:Refresh Main Axis 1")
       if(!is.null(tmpAxis1)){
         if(is.numeric(tmpAxis1)){
           if(tmpAxis1 < MainAxesAngle[[CurrGauss]][2]){
@@ -1226,7 +1239,7 @@ AdaptGauss2D = function(Data,
       tmpAxis2 = input$NumericMainAxis2
       disable("execEM")
       #print("Refresh Values for Main Axis 2")
-      #print("AdaptGauss2D:Refresh Main Axis 2")
+      #print("AdaptDunes:Refresh Main Axis 2")
       if(!is.null(tmpAxis2)){
         if(is.numeric(tmpAxis2)){
           if(tmpAxis2 > MainAxesAngle[[CurrGauss]][1]){
@@ -1513,7 +1526,7 @@ AdaptGauss2D = function(Data,
     #--------------------------------------------------------------------------#
     # Change current Gauss
     observe({
-      #print("AdaptGauss2D: Update CurrGauss")
+      #print("AdaptDunes: Update CurrGauss")
       #print("Update CurrGauss")
       if (!is.null(input$gaussianNo)){
         CurrGauss                     <<- input$gaussianNo
@@ -1536,11 +1549,22 @@ AdaptGauss2D = function(Data,
           newCls = tmpV$Cls
         }else if (substr(tmpFile, nchar(tmpFile) - 2, nchar(tmpFile)) == "csv"){
           tmpV   = read.delim2(file = tmpFile, header = FALSE)
-          newCls = as.matrix(tmpV)[,1]
+          if(is.list(tmpV)){
+            tmpV = unlist(tmpV)
+          }
+          if(is.na(as.numeric(tmpV[1]))){
+            newCls = as.numeric(tmpV[2:length(tmpV)])
+          }else{
+            newCls = as.numeric(tmpV)
+          }
+        }else{
+          newCls = 0
         }
         # Check if exact number of entries are there
         if(is.numeric(newCls) & is.vector(newCls) & length(newCls) == length(OriginalCls)){
           OriginalCls <<- newCls
+          iBefehl              <<- iBefehl+1
+          befehl$buttonClasses <- iBefehl
         }else{
           cat(file=stderr(), "Given class has not the correct number of class labels.", "\n")
         }

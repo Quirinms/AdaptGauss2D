@@ -4,7 +4,6 @@ export(EstimateNumberOfModes)
 
 import("plotly")
 import("shiny")
-importFrom("mvtnorm","dmvnorm")
 import("shinyWidgets")
 
 importFrom("shinyjs", "disable")
@@ -15,4 +14,4 @@ importFrom("shinyjs", "disable")
 importFrom("grDevices", "colorRampPalette")
 importFrom("stats", "na.omit", "sd")
 importFrom("utils", "setTxtProgressBar", "txtProgressBar", "read.delim2", "write.table")
-    importFrom("stats", "cutree", "hclust")
+importFrom("stats", "cutree", "hclust")

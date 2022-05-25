@@ -77,7 +77,7 @@ computeGMMClassification = function(Data, Means, Covariances, Weights){
   }
 
   gDen = sapply(1:length(Means), function(i){       # density for each point and gaussian
-    mvtnorm::dmvnorm(x = Data, mean = Means[[i]], sigma = Covariances[[i]]) * Weights[i]
+    mixtools::dmvnorm(y = Data, mu = Means[[i]], sigma = Covariances[[i]]) * Weights[i]
   })
   Classification  = apply(gDen, 1, which.max)
   return(list("Classification"  = Classification,

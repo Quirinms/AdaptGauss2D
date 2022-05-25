@@ -6,13 +6,9 @@ Plot density of two-dimensional data.
 }
 \usage{
 plotDensity(Data, Cls, CurrGauss, Colors,
-
 GridDensity,Means, Covariances,Weights,
-
 MainAxesAngle,XKernel, YKernel, Shapes, ShapeText,
-
 AxNames = c("X1", "X2"),ShowAxis = FALSE, ShowEllipsoids = TRUE,
-
 ShowScatter = FALSE,ShowGaussNr = FALSE, Source = "D")
 }
 \arguments{
@@ -20,7 +16,7 @@ ShowScatter = FALSE,ShowGaussNr = FALSE, Source = "D")
 \item{Cls}{[1:n] Numerical vector of size n containing the classes of each observation.}
 \item{CurrGauss}{Integer number indicating the currently highlighted gaussian
 component.}
-\item{Colors}{...}
+\item{Colors}{[1:l] Character vector with l color names or more.}
 \item{GridDensity}{[1:x, 1:x] Numeric matrix with PDF for a GMM with one or more
 Gaussians on a Grid defined by the vectors XKernel and YKernel.}
 \item{Means}{List with l [1:2] numerical vector defining the means of the l GMM
@@ -38,11 +34,10 @@ for a shape for plotting. Here it is used for plotting an ellipsoid.}
 two-dimensional coordinates and one entry for the number of the Gaussian
 component.}
 \item{AxNames}{[1:2] Character vector with ax names for plot description.}
-\item{ShowAxis}{Boolean determining ...}
-\item{ShowEllipsoids}{Boolean determining ....}
-\item{ShowScatter}{Boolean determining ....}
-\item{ShowGaussNr}{Boolean determining if the shown Gaussian components are
-enumerated (TRUE) or not (FALSE).}
+\item{ShowAxis}{Boolean indicating to show models axis or not.}
+\item{ShowEllipsoids}{Boolean indicating to show models ellipsoids or not.}
+\item{ShowScatter}{Boolean indicating if data scatter is shown or not.}
+\item{ShowGaussNr}{Boolean indicating to enumerate model components.}
 \item{Source}{Character indicating plot source (Default = "D"). Important attribute for
 plotly in shiny in order to keep control of specific panels.}
 }

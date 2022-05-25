@@ -22,9 +22,9 @@ computeGridDensity = function(XKernel, YKernel,
   DomainGrid = as.matrix(expand.grid(XKernel, YKernel))
   GridDensity = 0
   for(i in 1:length(Means)){
-    TmpDensity = mvtnorm::dmvnorm(x     = DomainGrid,        # Marginal density estimation
-                                  mean  = Means[[i]],
-                                  sigma = Covariances[[i]])
+    TmpDensity = mixtools::dmvnorm(y     = DomainGrid,        # Marginal density estimation
+                                   mu    = Means[[i]],
+                                   sigma = Covariances[[i]])
     # Weight each componente with its respective weight and ensure total sum = 1
     TmpDensity = Weights[i] * TmpDensity/sum(TmpDensity)
     GridDensity = GridDensity + TmpDensity

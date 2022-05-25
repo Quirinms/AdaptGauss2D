@@ -21,9 +21,9 @@ computeDotDensity = function(Data, Means, Covariances, Weights){
   # Compute the density for a density dot plot
   DotDensity = 0
   for(i in 1:length(Means)){
-    TmpDensity = mvtnorm::dmvnorm(x     = Data,               # Marginal density estimation
-                                  mean	= Means[[i]],
-                                  sigma = Covariances[[i]])
+    TmpDensity = mixtools::dmvnorm(y     = Data,               # Marginal density estimation
+                                   mu	 = Means[[i]],
+                                   sigma = Covariances[[i]])
     # Ensure probability density as part of mixture (respect weights of each component)
     TmpDensity = Weights[i] * TmpDensity/sum(TmpDensity)
     DotDensity = DotDensity + TmpDensity

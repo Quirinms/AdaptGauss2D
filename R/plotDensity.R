@@ -183,7 +183,7 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
   plotOut = plotly::plot_ly(x = XKernel,
                             y = YKernel,
                             type = "contour",
-                            colors = PmatrixColormap,
+                            colors = AdaptDunes::PmatrixColormap,
                             source = Source)
   plotOut = plotly::add_contour(p = plotOut,
                                 z = GridDensity)

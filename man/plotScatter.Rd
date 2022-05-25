@@ -6,31 +6,31 @@ Plot scatter of two-dimensional dataset with density of a Gaussian mixture model
 }
 \usage{
 plotScatter(Data, CurrGauss, Means, Covariances,
-
 MainAxesAngle, Colors, Cls,Shapes,
-
-ShapeText, AxNames = c("X1", "X2"), ShowAxis = FALSE, #
-
+ShapeText, AxNames = c("X1", "X2"), ShowAxis = FALSE,
 ShowEllipsoids = FALSE, ShowGaussNr = FALSE, Source = "D")
 }
 \arguments{
 \item{Data}{[1:n, 1:2] Numeric matrix with n observations and 2 features.}
-\item{CurrGauss}{...}
+\item{CurrGauss}{Integer indicating the currently selected Gaussian
+component.}
 \item{Means}{List with l [1:2] numerical vector defining the means of the l GMM
 components.}
 \item{Covariances}{List with l [1:2, 1:2] numerical matrices defining the
 covariance matrices of the l GMM components.}
 \item{MainAxesAngle}{List of numeric vectors with 1st and 2nd main axes of a 2D
 ellipsoid and the respective angles measured to the first unit vector c(0,1).}
-\item{Colors}{[1:n] Numerical vector of size n containing the colors of each observation.}
+\item{Colors}{[1:l] Character vector with l color names or more.}
 \item{Cls}{[1:n] Numerical vector of size n containing the classes of each observation.}
 \item{Shapes}{List of List with 4 attributes (type, fillcolor, opacity, path)
 for a shape for plotting. Here it is used for plotting an ellipsoid.}
-\item{ShapeText}{...}
+\item{ShapeText}{[1:l, 1:3] Numeric matrix with l means and two entries for the
+two-dimensional coordinates and one entry for the number of the Gaussian
+component.}
 \item{AxNames}{[1:2] Character vector with ax names for plot description.}
-\item{ShowAxis}{...}
-\item{ShowEllipsoids}{Boolean indicating...}
-\item{ShowGaussNr}{Boolean indicating...}
+\item{ShowAxis}{Boolean indicating to show models axis or not.}
+\item{ShowEllipsoids}{Boolean indicating to show models ellipsoids or not.}
+\item{ShowGaussNr}{Boolean indicating to enumerate model components.}
 \item{Source}{Character indicating plot source. Important attribute for
 plotly in shiny in order to keep control of specific panels.}
 }

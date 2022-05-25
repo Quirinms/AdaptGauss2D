@@ -36,15 +36,12 @@ LIST of
 }
 \references{
 [Thrun/Stier, 2021]  Thrun, M. C., & Stier, Q.: Fundamental Clustering Algorithms Suite SoftwareX, Vol. 13(C), pp. 100642, doi 10.1016/j.softx.2020.100642, 2021.
-
-
 }
 \author{
 Michael Thrun
 }
-
 \seealso{
-\link[FCPS]{\code{ClusterNoEstimation}}
+\link[FCPS]{ClusterNoEstimation}
 }
 \examples{
 data(EngyTime)

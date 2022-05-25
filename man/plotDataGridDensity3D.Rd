@@ -18,7 +18,7 @@ Data computed as grid on the domain defined by XKernel and YKernel in order to
 plot a continuous density plot.}
 \item{EmpiricDataPDE}{[1:n] Numeric vector with density estimation of Data
 defined for each datapoint within the Data.}
-\item{Colors}{[1:n] Numeric vector with color assignment for n observations.}
+\item{Colors}{[1:l] Character vector with l color names or more.}
 \item{Cls}{[1:n] Numeric vector with class assignment for n observations.}
 \item{Camera}{List of attributes concerning the camera angle for plotly visualizations.}
 \item{ShowScatter}{Boolean (Default=TRUE). T: Show Data Scatter with empirical
@@ -26,8 +26,8 @@ estimated density. F: Do not show nothing.}
 \item{AxNames}{[1:2] Character vector with ax names for plot description.}
 \item{Source}{Character indicating plot source. Important attribute for
 plotly in shiny in order to keep control of specific panels.}
-\item{Debug}{Boolean (Default=FALSE). T: Show developer information and warnings
-in terminal. F: Show nothing.}
+\item{Debug}{Boolean (Default=FALSE). TRUE: Show developer information and warnings
+in terminal. FALSE: Show nothing.}
 }
 \value{
 \item{plotOut}{Plotly object containing plot for direct visualization.}

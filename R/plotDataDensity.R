@@ -73,7 +73,7 @@ plotDataDensity = function(Data, Cls, CurrGauss, Colors,
   plotOut = plotly::plot_ly(x = XKernel,
                             y = YKernel,
                             type = "contour",
-                            colors = AdaptGauss2D::PmatrixColormap,
+                            colors = AdaptDunes::PmatrixColormap,
                             source = Source)
   plotOut = plotly::add_contour(p = plotOut,
                                 z = ContinuousDataPDE)
