@@ -19,7 +19,6 @@ computeRMS = function(Data, Means, Covariances, Weights, EmpiricDataPDE){
   #
   #
   # Author: QMS 15.12.2021
-
   # Compute the density for a density dot plot
   GMMDensity = 0
   MaxDensityPerClass = c()
@@ -33,6 +32,5 @@ computeRMS = function(Data, Means, Covariances, Weights, EmpiricDataPDE){
     GMMDensity         = GMMDensity + TmpDensity
   }
   RMS = sqrt(sum((GMMDensity-EmpiricDataPDE)**2))*100
-
   return(round(RMS, 5))
 }

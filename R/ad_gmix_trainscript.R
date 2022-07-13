@@ -243,23 +243,14 @@ ad_gmix_trainscript = function(Parm, Data, Nit, SamplesPerMode=NULL, Bias=0,
         best = Q
       }
     }
-  }else{ # (DIM*N*Nit)> 1E6  large problem use tacho
-    UpdateTacho = 10                     # when to update tacho
-    Pname ='EM '                         # namen fuer die tacho Ausgabe
-    #ShowTacho = Verbose > 0
-
-    withProgress(message = 'Computing EM', value = 0, {
+  }else{ # (DIM*N*Nit)> 1E6  large problem use progess bar
+    #shiny::withProgress(message = 'Computing EM', value = 0, {
       for(iter in 1:Nit){
         V    = gmix_step(Parm, Data, Bias)
         Parm = V$Parm
         Q    = V$Q
         LogQ = abs(-log(-Q))
-
-        incProgress(1/Nit, detail = paste("Doing step", iter))
-
-        #if ShowTacho &(mod(iter,UpdateTacho)==0) ;
-        #waitbar(iter/Nit,Tacho,[Pname,': ',num2str(iter),' /', num2str(Nit),' Q=',num2str(round(LogQ))]);
-        #end; % update tacho
+        #shiny::incProgress(1/Nit, detail = paste("Doing step", iter))
         if((Verbose ==2) & ( iter>5)){
           if(Addmodes != 0){ # adding / gausses is allowed
             #plot(iter, -log(-Q))
@@ -286,7 +277,6 @@ ad_gmix_trainscript = function(Parm, Data, Nit, SamplesPerMode=NULL, Bias=0,
         }
         wts   = Parm$Modes$Weight
         nmode = length(wts)
-
         if(Addmodes){ # evenually reduce number of gaussians ALU 2019
           V    = gmix_deflate(Parm, min(SamplesPerMode/N,.5), 1.5/N,Verbose)
           Parm = V$Parm
@@ -325,11 +315,8 @@ ad_gmix_trainscript = function(Parm, Data, Nit, SamplesPerMode=NULL, Bias=0,
         if(Q > best){
           best=Q
         }
-        #if(ShowTacho){
-        #  close(pb)
-        #}
       }
-    })
+    #})
   }
   colnames(Parm$Modes$Mean) = NULL
   return(list("EMmean"   = Parm$Modes$Mean,

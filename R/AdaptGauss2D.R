@@ -50,7 +50,6 @@ AdaptGauss2D = function(Data,
   #
   # Author: QS 20.05.2022
   #
-
   #----------------------------------------------------------------------------#
   #                           Error Capturing
   #----------------------------------------------------------------------------#
@@ -121,14 +120,10 @@ AdaptGauss2D = function(Data,
     message("Parameter Debug is not a logical type. Returning.")
     return()
   }
-
   gaussColors = c("blue", "red", "darkgoldenrod", "darkgreen", "magenta", "grey",
                   "cyan", "hotpink", "mediumturquoise", "yellow", "dodgerblue", "lightred")
   #gaussColors2 = grDevices::col2rgb(gaussColors, alpha = T)
   #emSelection = c("Baggenstos", "Mixtools")
-
-
-
   #----------------------------------------------------------------------------#
   #                                    UI
   #----------------------------------------------------------------------------#
@@ -191,7 +186,7 @@ AdaptGauss2D = function(Data,
                                               fluidRow(actionButton("loadCls",
                                                                     "Load Classification",
                                                                     width = "100%", icon = icon("fas fa-file"))),
-                                              fluidRow(actionButton("saveAdaptDunes",
+                                              fluidRow(actionButton("saveAdaptGauss2D",
                                                                     "Save Current Setting",
                                                                     width = "100%", icon = icon("fas fa-file"))),
                                               fluidRow(actionButton("quitButton",
@@ -203,7 +198,6 @@ AdaptGauss2D = function(Data,
                                  #conditionalPanel(condition = "dbt==T",
                                  #                  fluidRow(style = 'padding-top:3px;padding-bottom:0px',
                                  #                          column(12, selectInput("EM", "Select EM-Algorithm", choices = emSelection, width = "100%")))),
-
                                  fluidRow(style = 'padding-top:0px;padding-bottom:2px',
                                           column(4, actionButton("execEM", " EM", width = "100%", icon = icon("calculator"))),
                                           #column(4, actionButton("execEM", " EM", width = "100%", icon = icon("calculator"))),
@@ -235,7 +229,6 @@ AdaptGauss2D = function(Data,
               )
     )
   )
-
   #----------------------------------------------------------------------------#
   #                                 Server
   #----------------------------------------------------------------------------#
@@ -243,7 +236,6 @@ AdaptGauss2D = function(Data,
     if(Debug == F){
       options(warn = -1)    # Do not show any warnings at all if 'Debug' modus is disabled
     }
-
     #----------------------------------------------------------------------------#
     #                           Initialization
     #----------------------------------------------------------------------------#
@@ -252,30 +244,23 @@ AdaptGauss2D = function(Data,
       incProgress(1/NumStepsInit, detail = paste("Doing step", 1))
       Features = c()
       if(is.null(colnames(Data))){
-        for(i in 1:dim(Data)[2]){
-          Features = c(Features, paste0("Feature", i))
-        }
+        Features = paste0("Features", 1:dim(Data)[2])
       }else{
         Features = colnames(Data)
       }
-
       Feature1     = Features[1]
       Feature2     = Features[2]
       FeatureIdx1  = 1
       FeatureIdx2  = 2
-
       if(is.null(Cls)){
         Cls = rep(0, dim(Data)[1])
       }
-
       # Sample the data (important for Big Data)
       #----------------------------------------------------------------------------#
       # Sample data for EM (use enough to reach an accurate estimate)
       dataSampleIdx = computeSample4EM(nrow(Data), BigDataMaximum = 0.6)
       DataEM        = Data[dataSampleIdx, c(FeatureIdx1, FeatureIdx2)]
-
       incProgress(1/NumStepsInit, detail = paste("Doing step", 2))
-
       # Sample data for visualizations (use a minimum of data to reduce
       # computational power but sample smart, so that the structures are visualized
       # proportional)
@@ -306,7 +291,6 @@ AdaptGauss2D = function(Data,
     DataSigma = diag(c(SDX, SDY))
     Fi        = mixtools::dmvnorm(y = Data[,c(FeatureIdx1, FeatureIdx2)], mu = DataMean, sigma = DataSigma)
     RMSE0     = sqrt(sum((Fi - EmpiricDataPDE)^2))/100
-
     # GMM
     #----------------------------------------------------------------------------#
     # If any parameter is not set, estimate a matching number of GMM components
@@ -364,7 +348,6 @@ AdaptGauss2D = function(Data,
       Weights           = tmpRes$Lambda
       tmpMainAxesAngles = tmpRes$MainAxesAngle
     }
-
     #----------------------------------------------------------------------------#
     if(Debug){
       cat(file=stderr(), paste0("Total no. cases: ",         dim(Data)[1]) ,"\n")
@@ -376,7 +359,6 @@ AdaptGauss2D = function(Data,
       cat(file=stderr(), paste0("Number of gaussians: ",     length(Means)) ,"\n")
       cat(file=stderr(), paste0("Sum of weights: ",          sum(Weights)) ,"\n")
     }
-
     #--------------------------------------------------------------------------#
     #          Reactive Values
     #--------------------------------------------------------------------------#
@@ -399,7 +381,6 @@ AdaptGauss2D = function(Data,
     values$showEllipsoids       = "No ellipsoids"
     values$showScatter          = "No scatter"
     values$rightCls             = "Orig. Classes"
-
     # Reactive values for internal updates
     befehl                        <<- reactiveValues()
     befehl$updateGaussianNo       =   0
@@ -414,7 +395,6 @@ AdaptGauss2D = function(Data,
     befehl$updateEllipsoid        =   0
     befehl$renderRMS              =   0
     befehl$buttonClasses          =   0
-
     #--------------------------------------------------------------------------#
     #          Global variables
     #--------------------------------------------------------------------------#
@@ -488,7 +468,6 @@ AdaptGauss2D = function(Data,
     ControlNormOthers    = F
     Control6             = F
     ControlSI            = F
-
     #--------------------------------------------------------------------------#
     #     Dynamically rendered components of UI
     #--------------------------------------------------------------------------#
@@ -496,7 +475,6 @@ AdaptGauss2D = function(Data,
     # => Gaussian Components Selection as Slider
     # => Slider Inputs (Weights, Means, Main Axes, Angle of first main ax)
     # => Numeric Inputs (Weights, Means, Main Axes, Angle of first main ax)
-
     output$uiFeature1 = renderUI({
       uiFeature1Selection = selectInput(inputId   = "Feature1",
                                         label     = "Feature 1",
@@ -507,7 +485,6 @@ AdaptGauss2D = function(Data,
                                         width     = "100%")
       uiFeature1Selection
     })
-
     output$uiFeature2 = renderUI({
       uiFeature2Selection = selectInput(inputId   = "Feature2",
                                         label     = "Feature 2",
@@ -518,7 +495,6 @@ AdaptGauss2D = function(Data,
                                         width     = "100%")
       uiFeature2Selection
     })
-
     output$gaussianNo = renderUI({
       befehl$drawGaussianComponents
       GaussianNoRow =
@@ -538,7 +514,6 @@ AdaptGauss2D = function(Data,
         )
       GaussianNoRow
     })
-
     output$buttonControlLeft = renderUI({
       buttonControlLeft =
         fluidRow(style="vertical-align:bottom;", #align:top???
@@ -554,14 +529,12 @@ AdaptGauss2D = function(Data,
         )
       buttonControlLeft
     })
-
     output$classButtonLeft <- renderUI({
       befehl$buttonClasses
       if(!all(OriginalCls == rep(0, dim(Data)[1]))){
         actionButton("changeLeftPlot2", values$leftPlot2, value = T, width = "100%")
       }
     })
-
     output$buttonControlRight = renderUI({
       buttonControlRight =
         fluidRow(style="vertical-align:bottom;",#align:top???
@@ -584,15 +557,12 @@ AdaptGauss2D = function(Data,
         )
       buttonControlRight
     })
-
     output$classButtonRight <- renderUI({
       befehl$buttonClasses
       if(!all(OriginalCls == rep(0, dim(Data)[1]))){
         actionButton("changeRightCls", values$rightCls, value = T, width = "100%")
       }
     })
-
-
     output$control = renderUI({
       befehl$drawUIControl
       #gIds = paste0("gaussWeight", 1:NumGauss)
@@ -656,7 +626,6 @@ AdaptGauss2D = function(Data,
         )
       LowerControl
     })
-
     output$controlAngle = renderUI({
       befehl$drawUIControl
       #gIds = paste0("gaussWeight", 1:NumGauss)
@@ -676,11 +645,9 @@ AdaptGauss2D = function(Data,
                                     style=paste0("color:",gaussColors[CurrGauss]))
       LowerControl
     })
-
     #--------------------------------------------------------------------------#
     #                Internal functions
     #--------------------------------------------------------------------------#
-
     create_backup = function(){
       #print(paste0("create_backup", tmpOld))
       if(length(BackUpMeans[[CurrBackUpPosition]]) == length(Means)){    # Check if current setting unequals new setting, implying need for backup
@@ -702,7 +669,6 @@ AdaptGauss2D = function(Data,
         execute_backup()               # Create backup after the current position
       }
     }
-
     purge_future_history = function(){
       if(length(BackUpMeans) > CurrBackUpPosition){
         intL = length(BackUpMeans) - CurrBackUpPosition
@@ -713,7 +679,6 @@ AdaptGauss2D = function(Data,
         BackUpCurrGauss     <<- BackUpCurrGauss[1:CurrBackUpPosition]
       }
     }
-
     execute_backup = function(){
       CurrBackUpPosition                        <<- CurrBackUpPosition + 1
       #tmpNew                        =   length(BackUpMeans) + 1
@@ -724,7 +689,6 @@ AdaptGauss2D = function(Data,
       BackUpWeights[[CurrBackUpPosition]]       <<- Weights
       BackUpCurrGauss                           <<- c(BackUpCurrGauss, CurrGauss)
     }
-
     redo_next_backup = function(){
       if(length(BackUpMeans) >= (CurrBackUpPosition + 1)){
         CurrBackUpPosition <<- CurrBackUpPosition + 1
@@ -748,7 +712,6 @@ AdaptGauss2D = function(Data,
         cat(file = stderr(), "Redo not possible. History is at the first position.\n")
       }
     }
-
     recover_latest_backup = function(){
       #GoTo       = length(BackUpMeans) - 1
       #NumBackUps = length(BackUpMeans)
@@ -784,12 +747,10 @@ AdaptGauss2D = function(Data,
         cat(file = stderr(), "Undo not possible. History is at the first position.\n")
       }
     }
-
     #--------------------------------------------------------------------------#
     # Last steps before the UI starts and after the init. of all vars and funs
     #--------------------------------------------------------------------------#
     execute_backup()                # Save the start setting
-
     #--------------------------------------------------------------------------#
     #     Observe update for slider and numeric input
     #--------------------------------------------------------------------------#
@@ -814,74 +775,58 @@ AdaptGauss2D = function(Data,
     validationTimerC6 <- reactiveTimer(5000)
     validationTimerSI <- reactiveTimer(5000)
     validationTimerRightPlotControl <- reactiveTimer(2000)
-
-
-
     observe({
       validationTimerRightPlotControl()
       RightPlotControlStopReactions <<- F
     })
-
     observe({
       validationTimer1()
       MonitorStopReactions <<- F
     })
-
     observe({
       validationTimer2()
       ControlPlotReaction1 <<- F
     })
-
     observe({
       validationTimer3()
       ControlPlotReaction2 <<- F
     })
-
     observe({
       validationTimer4()
       ControlPlotReaction3 <<- F
     })
-
     observe({
       validationTimerEM()
       ControlEM <<- F
     })
-
     observe({
       validationTimer5()
       ControlAddGauss <<- F
     })
-
     observe({
       validationTimer6()
       ControlRemoveGauss <<- F
     })
-
     observe({
       validationTimer7()
       ControlUndoRedoEM <<- F
     })
-
     observe({
       validationTimer8()
       ControlNormAll <<- F
     })
-
     observe({
       validationTimer9()
       ControlNormOthers <<- F
     })
-
     observe({
       validationTimer10()
       Control6 <<- F
     })
-
     observe({
       validationTimerSI()
       ControlSI <<- F
     })
-
     #--------------------------------------------------------------------------#
     # Change features (consider each dimension alone standing)
     #--------------------------------------------------------------------------#
@@ -896,7 +841,6 @@ AdaptGauss2D = function(Data,
           AxNames[1]  <<- Feature1
           DataEM      <<- Data[dataSampleIdx, c(FeatureIdx1, FeatureIdx2)]
           DataVis     <<- Data[dataSampleIdx2, c(FeatureIdx1, FeatureIdx2)]
-
           # Root Mean Squared Deviation
           meanX     = mean(Data[,FeatureIdx1])
           meanY     = mean(Data[,FeatureIdx2])
@@ -906,24 +850,20 @@ AdaptGauss2D = function(Data,
           DataSigma = diag(c(SDX, SDY))
           Fi        = mixtools::dmvnorm(y = Data[,c(FeatureIdx1, FeatureIdx2)], mu = DataMean, sigma = DataSigma)
           RMSE0     = sqrt(sum((Fi - EmpiricDataPDE)^2))
-
           BackUpMeans          <<- list()                                         # Backup for undoing results of the EM
           BackUpCovMats        <<- list()                                         #
           BackUpMainAxesAngle  <<- list()                                         #
           BackUpWeights        <<- list()                                         #
           BackUpCurrGauss      <<- c()                                            #
           CurrBackUpPosition   <<- 0
-
           # Variables based on Data
           MinDataVal           <<- round(min(min(Data[,FeatureIdx1]), min(Data[,FeatureIdx2])), 2)    # Minimum for diverse (e.g., plots are all scaled the same)
           MaxDataVal           <<- round(max(max(Data[,FeatureIdx1]), max(Data[,FeatureIdx2])), 2)    # Maximum for diverse (e.g., range of parameters Mean)
           LimitMean            <<- c(MinDataVal, MaxDataVal)
-
           # Call EM
           V   = EstimateNumberOfModes(Data = Data[,c(FeatureIdx1, FeatureIdx2)], MaxModeNo = 7)
           res = ad_interfaceEM(Data = DataEM, Mu = NULL, Sigma = NULL,
                                Lambda = NULL, Nmodes = V$ModesNo, Addmodes = 0, Nit = 50)
-
           # Variables based on GMM
           Means         <<- res$Mu
           CovMats       <<- res$Sigma
@@ -931,9 +871,7 @@ AdaptGauss2D = function(Data,
           MainAxesAngle <<- res$MainAxesAngle
           NumGauss      <<- length(Means)
           CurrGauss     <<- 1
-
           execute_backup()
-
           DensityMap        <<- DataVisualizations::SmoothedDensitiesXY(X = Data[,FeatureIdx1], # Uses SDH from [Eilers/Goeman, 2004]
                                                                         Y = Data[,FeatureIdx2],
                                                                         nbins = 100)
@@ -941,7 +879,6 @@ AdaptGauss2D = function(Data,
           EmpiricDataPDE    <<- DensityMap$Densities/sum(DensityMap$Densities)        # Density estimation for data => 3D Scatter plot
           XKernel           <<- DensityMap$Xkernels
           YKernel           <<- DensityMap$Ykernels
-
           iBefehl                       <<- iBefehl+1
           befehl$updateClassification   <-  iBefehl
           befehl$updateVisualizations   <-  iBefehl
@@ -954,7 +891,6 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     observe({
       input$Feature2
       if(!is.null(input$Feature2)){
@@ -964,7 +900,6 @@ AdaptGauss2D = function(Data,
           AxNames[2]  <<- Feature2
           DataEM[,2]  <<- Data[dataSampleIdx, FeatureIdx2]
           DataVis[,2] <<- Data[dataSampleIdx2, FeatureIdx2]
-
           # Root Mean Squared Deviation
           meanX     = mean(Data[,FeatureIdx1])
           meanY     = mean(Data[,FeatureIdx2])
@@ -974,24 +909,20 @@ AdaptGauss2D = function(Data,
           DataSigma = diag(c(SDX, SDY))
           Fi        = mixtools::dmvnorm(y = Data[,c(FeatureIdx1, FeatureIdx2)], mu = DataMean, sigma = DataSigma)
           RMSE0     = sqrt(sum((Fi - EmpiricDataPDE)^2))
-
           BackUpMeans          <<- list()                                         # Backup for undoing results of the EM
           BackUpCovMats        <<- list()                                         #
           BackUpMainAxesAngle  <<- list()                                         #
           BackUpWeights        <<- list()                                         #
           BackUpCurrGauss      <<- c()                                            #
           CurrBackUpPosition   <<- 0
-
           # Variables based on Data
           MinDataVal           <<- round(min(min(Data[,FeatureIdx1]), min(Data[,FeatureIdx2])), 2)    # Minimum for diverse (e.g., plots are all scaled the same)
           MaxDataVal           <<- round(max(max(Data[,FeatureIdx1]), max(Data[,FeatureIdx2])), 2)    # Maximum for diverse (e.g., range of parameters Mean)
           LimitMean            <<- c(MinDataVal, MaxDataVal)
-
           # Call EM
           V   = EstimateNumberOfModes(Data = Data[,c(FeatureIdx1, FeatureIdx2)], MaxModeNo = 7)
           res = ad_interfaceEM(Data = DataEM, Mu = NULL, Sigma = NULL,
                                Lambda = NULL, Nmodes = V$ModesNo, Addmodes = 0, Nit = 50)
-
           # Variables based on GMM
           Means         <<- res$Mu
           CovMats       <<- res$Sigma
@@ -999,9 +930,7 @@ AdaptGauss2D = function(Data,
           MainAxesAngle <<- res$MainAxesAngle
           NumGauss      <<- length(Means)
           CurrGauss     <<- 1
-
           execute_backup()
-
           DensityMap        <<- DataVisualizations::SmoothedDensitiesXY(X = Data[,FeatureIdx1], # Uses SDH from [Eilers/Goeman, 2004]
                                                                         Y = Data[,FeatureIdx2],
                                                                         nbins = 100)
@@ -1009,7 +938,6 @@ AdaptGauss2D = function(Data,
           EmpiricDataPDE    <<- DensityMap$Densities/sum(DensityMap$Densities)        # Density estimation for data => 3D Scatter plot
           XKernel           <<- DensityMap$Xkernels
           YKernel           <<- DensityMap$Ykernels
-
           iBefehl                       <<- iBefehl+1
           befehl$updateClassification   <-  iBefehl
           befehl$updateVisualizations   <-  iBefehl
@@ -1022,7 +950,6 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     # Update the visualizations
     observe({
       befehl$updateVisualizations
@@ -1030,10 +957,9 @@ AdaptGauss2D = function(Data,
                                          Means, CovMats, Weights)
       DotDensity <<- computeDotDensity(DataVis, Means, CovMats, Weights)
     })
-
     # Update Numeric Inputs (e.g., gaussian component was changed)
     observe({
-      #print("AdaptDunes: Update Slider for M, S and W")
+      #print("AdaptGauss2D: Update Slider for M, S and W")
       befehl$updateNumericInputs       #
       befehl$updateCurrGauss    # Gaussian component was updated
       disable("execEM")
@@ -1045,7 +971,6 @@ AdaptGauss2D = function(Data,
       updateNumericInput(session, "NumericMainAxis1", value = round(MainAxesAngle[[CurrGauss]][1], 4))
       updateNumericInput(session, "NumericMainAxis2", value = round(MainAxesAngle[[CurrGauss]][2], 4))
     })
-
     # Update the number of iterations in each EM computation
     observe({
       input$EMSteps
@@ -1053,21 +978,17 @@ AdaptGauss2D = function(Data,
         EMNumIterations <<- input$EMSteps
       #updateNumericInput(session, "EMNumIterations", value = EMNumIterations)
     })
-
     # Update checkbox for EM setting: Allow EM to split modes (TRUE/Check box) or not (FALSE/Empty box)
     observe({
       input$EMSplitModes
       EMSplitModes <<- as.numeric(input$EMSplitModes)
     })
-
     # Update Numeric Inputs if Slider Inputs change
     observe({
       if(!is.null(input$SliderAngle)){
         updateNumericInput(session, "NumericAngle", value=as.numeric(input$SliderAngle))
       }
     })
-
-
     # Update Slider Inputs if Numeric Inputs change
     observe({
       tmpVar = input$NumericAngle
@@ -1084,14 +1005,12 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     # Update Slider of gaussian components
     observe({
       befehl$updateGaussianNo
       Control6 <<- T
       updateSliderInput(session, "gaussianNo", value = CurrGauss)
     })
-
     # calculate the current classification
     observe({
       befehl$updateClassification
@@ -1114,18 +1033,16 @@ AdaptGauss2D = function(Data,
       iBefehl          <<- iBefehl+1
       befehl$renderRMS <-  iBefehl
     })
-
     observe({
       befehl$renderRMS
       output$RMS = renderText({paste0("RMSD%: ", as.character(round(RMS/RMSE0, 4)))})
     })
-
     # Refreshes values for Weights, Means, Axes and Angles if the Slider is changed
     observe({
       Control6<<-T
       tmpVar = input$NumericWeight
       #print("Refresh Values for Weights")
-      #print("AdaptDunes:Refresh Weights")
+      #print("AdaptGauss2D:Refresh Weights")
       if(!is.null(tmpVar)){
         if(is.numeric(tmpVar)){
           if((tmpVar > 0) & (tmpVar < 1)){
@@ -1140,12 +1057,11 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     observe({
       Control6<<-T
       tmpVar = input$NumericMean1
       #print("Refresh Values for Means")
-      #print("AdaptDunes:Refresh Means")
+      #print("AdaptGauss2D:Refresh Means")
       if(!is.null(tmpVar)){
         if(is.numeric(tmpVar)){
           if((tmpVar > LimitMean[1]) & (tmpVar < LimitMean[2])){
@@ -1160,12 +1076,11 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     observe({
       Control6 <<- T
       tmpVar = input$NumericMean2
       #print("Refresh Values for Means")
-      #print("AdaptDunes:Refresh Means")
+      #print("AdaptGauss2D:Refresh Means")
       if(!is.null(tmpVar)){
         if(is.numeric(tmpVar)){
           if((tmpVar > LimitMean[1]) & (tmpVar < LimitMean[2])){
@@ -1180,11 +1095,10 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     observe({
       tmpVar = input$NumericAngle
       #print("Refresh Values for Angle")
-      #print("AdaptDunes:Refresh Angle")
+      #print("AdaptGauss2D:Refresh Angle")
       if(!is.null(tmpVar)){
         if(is.numeric(tmpVar)){
           if((tmpVar >= LimitAngle[1]) & (tmpVar <= LimitAngle[2])){
@@ -1201,12 +1115,11 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     observe({
       tmpAxis1 = input$NumericMainAxis1
       disable("execEM")
       #print("Refresh Values for Main Axis 1")
-      #print("AdaptDunes:Refresh Main Axis 1")
+      #print("AdaptGauss2D:Refresh Main Axis 1")
       if(!is.null(tmpAxis1)){
         if(is.numeric(tmpAxis1)){
           if(tmpAxis1 < MainAxesAngle[[CurrGauss]][2]){
@@ -1234,12 +1147,11 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     observe({
       tmpAxis2 = input$NumericMainAxis2
       disable("execEM")
       #print("Refresh Values for Main Axis 2")
-      #print("AdaptDunes:Refresh Main Axis 2")
+      #print("AdaptGauss2D:Refresh Main Axis 2")
       if(!is.null(tmpAxis2)){
         if(is.numeric(tmpAxis2)){
           if(tmpAxis2 > MainAxesAngle[[CurrGauss]][1]){
@@ -1267,8 +1179,6 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
-
     #--------------------------------------------------------------------------#
     #
     #
@@ -1276,13 +1186,11 @@ AdaptGauss2D = function(Data,
     #
     #
     #--------------------------------------------------------------------------#
-
     #--------------------------------------------------------------------------#
     # Plot view left
     #--------------------------------------------------------------------------#
     output$leftView <- renderPlotly({
       befehl$plot
-
       if(Debug){
         cat(file=stderr(), "Render Left Main Plotly was toggled","\n")
       }
@@ -1293,7 +1201,6 @@ AdaptGauss2D = function(Data,
         }else{
           plotClassification = Classification[dataSampleIdx2]
         }
-
         # leftPlot is button for switching to different state (so if Data Est. is shown, then PlotModelDotDensity3D is plotted)
         if(values$leftPlot == "Data Estimation"){
           CovMats <<- lapply(MainAxesAngle, function(x) axesAngle2Covariance(x[1:2], x[3]))
@@ -1334,17 +1241,14 @@ AdaptGauss2D = function(Data,
         plotOut
       }
     })
-
     #--------------------------------------------------------------------------#
     # Plot view right
     #--------------------------------------------------------------------------#
     output$rightView  = renderPlotly({
       befehl$plot
-
       if(Debug){
         cat(file=stderr(), "Render Right Main Plotly:","\n")
       }
-
       if(ControlPlotReaction2==F){
         ControlPlotReaction2<<-T
         if(values$showAxis == "Axis"){
@@ -1406,7 +1310,6 @@ AdaptGauss2D = function(Data,
         plotOut
       }
     })
-
     #--------------------------------------------------------------------------#
     #                   Update and Manage Ellipsoids
     #--------------------------------------------------------------------------#
@@ -1429,13 +1332,11 @@ AdaptGauss2D = function(Data,
           shapes    = c(shapes, list(ellipse))#, vec1, vec2))
           shapeText = rbind(shapeText, c(Means[[i]][1], Means[[i]][2], i))
           values$lastKnownShapeStart[i,] = round(el[i,],4)
-
           values$shapes    = shapes
           values$shapeText = shapeText
         }
       },error =  function(e){cat(file = stderr(), "Some  error happened:"); cat(file = stderr(), paste0(e))})
     })
-
     #--------------------------------------------------------------------------#
     #                  React to shape movements
     #--------------------------------------------------------------------------#
@@ -1487,7 +1388,6 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     #--------------------------------------------------------------------------#
     #  Remember camera angle of 3D plots
     #--------------------------------------------------------------------------#
@@ -1503,7 +1403,6 @@ AdaptGauss2D = function(Data,
         cameraLeft <<- ed$scene.camera
       }
     })
-
     observe({
       if(Debug){
         cat(file=stderr(), "Plotly 3D Event is triggered:", "\n")
@@ -1513,20 +1412,18 @@ AdaptGauss2D = function(Data,
         cameraLeft <<- ed$scene.camera
       }
     })
-
     observe({
       ed = event_data("plotly_relayout", source = "R")
       if(!is.null(ed)){
         cameraRight <<- ed$scene.camera
       }
     })
-
     #--------------------------------------------------------------------------#
     #  Select Gaussian Component
     #--------------------------------------------------------------------------#
     # Change current Gauss
     observe({
-      #print("AdaptDunes: Update CurrGauss")
+      #print("AdaptGauss2D: Update CurrGauss")
       #print("Update CurrGauss")
       if (!is.null(input$gaussianNo)){
         CurrGauss                     <<- input$gaussianNo
@@ -1536,7 +1433,6 @@ AdaptGauss2D = function(Data,
         befehl$drawUIControl <- iBefehl
       }
     })
-
     #--------------------------------------------------------------------------#
     #  Load classes and save settings
     #--------------------------------------------------------------------------#
@@ -1570,25 +1466,21 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
-    observeEvent(input$saveAdaptDunes,{
+    observeEvent(input$saveAdaptGauss2D,{
       tmpDirBackUp = getwd()
       tmpDir = rstudioapi::selectDirectory()
       if(!is.null(tmpDir)){
         setwd(tmpDir)
         tmpTime = gsub(":", "", format(Sys.time(), "%Y%m%d%X"))
-
         tmpSamDat = Data[, c(FeatureIdx1, FeatureIdx2)]
         tmpV      = computeGMMClassification(tmpSamDat, Means, CovMats, Weights)
         Classification <<- tmpV$Classification
-
         #saveRDS(object = OriginalCls, file = paste0(tmpTime, "_Original_Classes.Rds"))
         #saveRDS(object = Classification, file = paste0(tmpTime, "_Model_Classes.Rds"))
         SaveMeans   = round(matrix(unlist(Means), byrow = TRUE, ncol = 2), 2)
         SaveCovMats = round(matrix(unlist(lapply(CovMats, t)), byrow = TRUE, ncol = 2), 2)
         SaveWeights = round(Weights, 2)
         SaveMAA     = round(matrix(unlist(MainAxesAngle), byrow = TRUE, ncol = 4), 2)
-
         if(dbt == TRUE){
           dbt.DataIO::WriteLRN(FileName = "Means",         Data = SaveMeans,   Key = 1:length(Means), Header = AxNames, CommentOrDigits = "Mean 1x2 stacked vertically.")
           dbt.DataIO::WriteLRN(FileName = "CovMats",       Data = SaveCovMats, Key = 1:(length(Means)*2), Header = AxNames, CommentOrDigits = "Covariance Matrix 2x2 stacked vertically.")
@@ -1604,22 +1496,19 @@ AdaptGauss2D = function(Data,
         }
         #save(list = c("Means", "CovMats", "Weights", "MainAxesAngle",
         #              "Classification", "OriginalCls"),
-        #     file = paste0(tmpTime, "_AdaptDunes.Rdata"))
+        #     file = paste0(tmpTime, "_AdaptGauss2D.Rdata"))
         setwd(tmpDirBackUp)
       }
     })
-
     #--------------------------------------------------------------------------#
     #  Add data scatter or markers
     #--------------------------------------------------------------------------#
     observeEvent(input$dataScatter,{
       values$dataScatter = !values$dataScatter
     })
-
     observeEvent(input$showMarkersLeft,{
       values$ShowMarkersLeft = input$showMarkersLeft
     })
-
     #--------------------------------------------------------------------------#
     #  Change Plot of left side (Model PDF or Data Estimation)
     #--------------------------------------------------------------------------#
@@ -1636,7 +1525,6 @@ AdaptGauss2D = function(Data,
         values$DotOrGrid = "Dot Density"
       }
     })
-
     observeEvent(input$changeLeftPlot,{
       if(values$leftPlot == "Data Estimation"){
         if(Debug){
@@ -1650,7 +1538,6 @@ AdaptGauss2D = function(Data,
         values$leftPlot = "Data Estimation"
       }
     })
-
     observeEvent(input$changeLeftPlot2,{
       if(values$leftPlot2 == "Orig. Classes"){
         if(Debug){
@@ -1664,7 +1551,6 @@ AdaptGauss2D = function(Data,
         values$leftPlot2 = "Orig. Classes"
       }
     })
-
     #--------------------------------------------------------------------------#
     #  Change Plot of right side (Scatter Plot or Classification Map)
     #--------------------------------------------------------------------------#
@@ -1675,28 +1561,24 @@ AdaptGauss2D = function(Data,
         values$rightPlot = 1
       }
     })
-
     observeEvent(input$changeRightPlot2,{
       if(RightPlotControlStopReactions==F){
         RightPlotControlStopReactions<<-T
         values$rightPlot = 2
       }
     })
-
     observeEvent(input$changeRightPlot3,{
       if(RightPlotControlStopReactions==F){
         RightPlotControlStopReactions<<-T
         values$rightPlot = 3
       }
     })
-
     observeEvent(input$changeRightPlot4,{
       if(RightPlotControlStopReactions==F){
         RightPlotControlStopReactions<<-T
         values$rightPlot = 4
       }
     })
-
     # Lower buttons for control of right plots
     observeEvent(input$showAxis,{
       if(RightPlotControlStopReactions==F){
@@ -1713,7 +1595,6 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     observeEvent(input$showEllipsoids,{
       if(RightPlotControlStopReactions==F){
         if(values$showEllipsoids == "No ellipsoids"){
@@ -1729,7 +1610,6 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     observeEvent(input$showScatter,{
       if(RightPlotControlStopReactions==F){
         if(values$showScatter == "No scatter"){
@@ -1745,7 +1625,6 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     observeEvent(input$changeRightCls,{
       if(RightPlotControlStopReactions==F){
         if(values$rightCls == "Orig. Classes"){
@@ -1755,7 +1634,6 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     #--------------------------------------------------------------------------#
     #  Add/Remove Gaussian Components
     #--------------------------------------------------------------------------#
@@ -1771,7 +1649,6 @@ AdaptGauss2D = function(Data,
         MainAxesAngle[[NumGauss]] <<- c(1,1,0,90) # Unit length for axes (1,1), 0 angle of 1st axis 1, 90 angle of 2nd axis
         Weights                   <<- rep(1/NumGauss, NumGauss)
         CurrGauss                 <<- NumGauss
-
         iBefehl                       <<- iBefehl+1
         befehl$updateClassification   <-  iBefehl
         befehl$updateVisualizations   <-  iBefehl
@@ -1783,11 +1660,9 @@ AdaptGauss2D = function(Data,
         #befehl$updateSlider           <-  iBefehl
         #befehl$plot                   <-  iBefehl
         befehl$updateEllipsoid        <-  iBefehl
-
         if(Debug) cat(file=stderr(), as.character(Weights), "\n")
       }
     })
-
     observeEvent(input$remGaussButton,{
       if(ControlRemoveGauss==F){
         ControlRemoveGauss<<-T
@@ -1812,7 +1687,6 @@ AdaptGauss2D = function(Data,
           CovMats       <<- CovMats[1:NumGauss]
           MainAxesAngle <<- MainAxesAngle[1:NumGauss]
           Weights       <<- rep(1 / NumGauss, NumGauss)
-
           iBefehl                       <<- iBefehl+1        # Trigger next command
           befehl$updateClassification   <-  iBefehl          # Start with internal changes such as classification first
           befehl$updateVisualizations   <-  iBefehl
@@ -1829,7 +1703,6 @@ AdaptGauss2D = function(Data,
         }
       }
     })
-
     #--------------------------------------------------------------------------#
     #         Expectation-Maximization Algorithm Interaction
     #--------------------------------------------------------------------------#
@@ -1874,7 +1747,6 @@ AdaptGauss2D = function(Data,
         )
       }
     })
-
     observeEvent(input$undoEM,{
       if(ControlUndoRedoEM==F){
         ControlUndoRedoEM<<-T
@@ -1883,7 +1755,6 @@ AdaptGauss2D = function(Data,
         recover_latest_backup()
       }
     })
-
     observeEvent(input$redoEM,{
       if(ControlUndoRedoEM==F){
         ControlUndoRedoEM<<-T
@@ -1892,7 +1763,6 @@ AdaptGauss2D = function(Data,
         redo_next_backup()
       }
     })
-
     #--------------------------------------------------------------------------#
     #  Norm Weights (All or Others)
     #--------------------------------------------------------------------------#
@@ -1913,7 +1783,6 @@ AdaptGauss2D = function(Data,
         befehl$updateEllipsoid <-  iBefehl
       }
     })
-
     observeEvent(input$normOth,{
       if(ControlNormOthers==F){
         ControlNormOthers<<-T
@@ -1936,7 +1805,6 @@ AdaptGauss2D = function(Data,
         befehl$updateEllipsoid        <-  iBefehl
       }
     })
-
     #--------------------------------------------------------------------------#
     #               End: Quit, Close
     #--------------------------------------------------------------------------#
@@ -1952,7 +1820,6 @@ AdaptGauss2D = function(Data,
                    "Angle"                   =   MainAxesAngle[3],
                    "Cls"                     =   Classification))
     })
-
     session$onSessionEnded(function() {
       print("Close App")
       V                      = computeGMMClassification(Data[,c(FeatureIdx1, FeatureIdx2)],

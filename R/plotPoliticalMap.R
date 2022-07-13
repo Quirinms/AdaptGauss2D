@@ -40,7 +40,6 @@ plotPoliticalMap = function(Data, CurrGauss,
   # plotOut    Plotly object containing plot for direct visualization.
   #
   # Author: QMS 03.01.2022
-
   if(missing(Data)){
     message("Parameter Data is missing. Returning.")
     return()
@@ -53,7 +52,6 @@ plotPoliticalMap = function(Data, CurrGauss,
       return()
     }
   }
-
   if(!is.null(Means)){
     if(!is.list(Means)){
       message("Parameter Means is not of type list. Returning.")
@@ -70,7 +68,6 @@ plotPoliticalMap = function(Data, CurrGauss,
       }
     }
   }
-
   if(!is.null(Covariances)){
     if(!is.list(Covariances)){
       message("Parameter CovMatrices is not of type list. Returning.")
@@ -87,7 +84,6 @@ plotPoliticalMap = function(Data, CurrGauss,
       }
     }
   }
-
   if(!is.null(Weights)){
     if(!is.vector(Weights)){
       message("Parameter Weights is not of type vector. Returning.")
@@ -97,7 +93,6 @@ plotPoliticalMap = function(Data, CurrGauss,
       return()
     }
   }
-
   if(missing(MainAxesAngle)){
     message("Parameter MainAxesAngle is missing. Returning.")
     return()
@@ -107,7 +102,6 @@ plotPoliticalMap = function(Data, CurrGauss,
       return()
     }
   }
-
   if(missing(Colors)){
     message("Parameter Colors is missing. Returning.")
     return()
@@ -117,7 +111,6 @@ plotPoliticalMap = function(Data, CurrGauss,
       return()
     }
   }
-
   if(missing(Cls)){
     message("Parameter Cls is missing. Returning.")
     return()
@@ -127,22 +120,18 @@ plotPoliticalMap = function(Data, CurrGauss,
       return()
     }
   }
-
   if(dim(Data)[1] != length(Cls)){
     message("Number of rows of parameter Data must match length of vector Cls. Returning.")
     return()
   }
-
   if(length(Colors) < length(unique(Cls))){
     message("Length of parameter Colors must be greater than or equal to the number of unique entries in Cls. Returning.")
     return()
   }
-
   if(!is.logical(ShowScatter)){
     message("Parameter Show3DPoints is not a logical type. Returning.")
     return()
   }
-
   df = as.data.frame(cbind(Data, as.vector(Cls)))
   df[,3] = as.factor(df[,3])
   grid = as.matrix(base::expand.grid(seq(min(df[, 1]), max(df[, 1]), length.out=100),
@@ -165,7 +154,6 @@ plotPoliticalMap = function(Data, CurrGauss,
                                   color = Colors[Cls[]],
                                   marker = list(size = 3, color = "black"))#, colors = Colors[1:length(unique(Cls))])
   }
-
   if(ShowAxis){
     for(i in 1:length(Means)){
       plotOut = plotly::add_markers(p = plotOut,
@@ -215,26 +203,22 @@ plotPoliticalMap = function(Data, CurrGauss,
       }
     }
   }
-
   #minData = round(min(min(Data[,1]), min(Data[,2])), 2)
   #minData = minData + sign(minData) * 0.1 * abs(minData)
   #maxData = round(max(max(Data[,1]), max(Data[,2])), 2)
   #maxData = maxData + sign(maxData) * 0.1 * abs(maxData)
-
   Xaxis <- list(title = AxNames[1],
                 fixedrange = T, scaleanchor="y", scaleratio=1,
                 zeroline = FALSE,
                 showline = FALSE,
                 showticklabels = TRUE,
                 showgrid = FALSE)
-
   Yaxis <- list(title = AxNames[2],
                 fixedrange = T,
                 zeroline = FALSE,
                 showline = FALSE,
                 showticklabels = TRUE,
                 showgrid = FALSE)
-
   if(length(Shapes) == length(Means)){
     for(i in 1:length(Means)){
       if(i != CurrGauss){
@@ -244,11 +228,9 @@ plotPoliticalMap = function(Data, CurrGauss,
       }
     }
   }
-
   if(ShowEllipsoids != TRUE){
     Shapes = NULL
   }
-
   plotOut = plotly::layout(p = plotOut,
                            shapes = Shapes,
                            title = "Political Map",

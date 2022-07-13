@@ -34,7 +34,6 @@ in terminal. FALSE: Show nothing.}
 }
 \author{Quirin Stier}
 \examples{
-
 \dontrun{
 data(EngyTime)
 Data = EngyTime

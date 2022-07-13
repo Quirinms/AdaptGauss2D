@@ -16,7 +16,6 @@ lqr_eval = function(Data, ModeMean, CholeskyCovar){
   #
   # in /dbt/EMforGauss/
   # Author QS 2021
-
   if(is.null(Data)){
     warning("Input parameter Data is not given. Returning.")
     return()

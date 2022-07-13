@@ -22,7 +22,6 @@ ad_interfaceEM = function(Data, Mu, Sigma, Lambda, Nmodes = 1, Addmodes = 1,
   # If you use EM Baggenstoss to optimize manual adjustments, try 1 iteration
   #
   # Author: QMS 15.12.2021
-
   if(!is.matrix(Data)){
     print("Data is not a matrix.")
     return()
@@ -31,17 +30,14 @@ ad_interfaceEM = function(Data, Mu, Sigma, Lambda, Nmodes = 1, Addmodes = 1,
     print("Data is not a numeric matrix.")
     return()
   }
-
   if(!is.numeric(Nit)){
     Nit = 1
   }
-
   if(is.null(Mu) | is.null(Sigma) |is.null(Lambda)){
     Mu     = NULL
     Sigma  = NULL
     Lambda = NULL
   }
-
   if(!is.null(Mu)){
     if(!is.list(Mu)){
       print("Mu is not a list.")
@@ -54,7 +50,6 @@ ad_interfaceEM = function(Data, Mu, Sigma, Lambda, Nmodes = 1, Addmodes = 1,
         }
       }
     }
-
     if(!is.list(Sigma)){
       print("Sigma is not a list.")
       return()
@@ -66,7 +61,6 @@ ad_interfaceEM = function(Data, Mu, Sigma, Lambda, Nmodes = 1, Addmodes = 1,
         }
       }
     }
-
     if(!is.vector(Lambda)){
       print("Lambda is not a vector.")
       return()

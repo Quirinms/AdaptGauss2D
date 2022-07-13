@@ -17,7 +17,6 @@ computeDotDensity = function(Data, Means, Covariances, Weights){
   #                    from Data.
   #
   # Author: QMS 15.12.2021
-
   # Compute the density for a density dot plot
   DotDensity = 0
   for(i in 1:length(Means)){

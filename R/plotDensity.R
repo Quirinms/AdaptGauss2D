@@ -41,7 +41,6 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
   # plotOut    Plotly object containing plot for direct visualization.
   #
   # Author: QMS 15.12.2021
-
   if(missing(Data)){
     message("Parameter Data is missing. Returning.")
     return()
@@ -54,12 +53,10 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
       return()
     }
   }
-
   if(missing(Cls)){
     message("Parameter Cls is missing. Returning.")
     return()
   }
-
   if(!is.null(Means)){
     if(!is.list(Means)){
       message("Parameter Means is not of type list. Returning.")
@@ -81,7 +78,6 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
       }
     }
   }
-
   if(!is.null(Covariances)){
     if(!is.list(Covariances)){
       message("Parameter Cov is not of type list. Returning.")
@@ -98,7 +94,6 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
       }
     }
   }
-
   if(!is.null(Weights)){
     if(!is.vector(Weights)){
       message("Parameter Weights is not of type vector. Returning.")
@@ -108,7 +103,6 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
       return()
     }
   }
-
   if(missing(XKernel)){
     message("Parameter XKernel is missing. Returning.")
     return()
@@ -118,7 +112,6 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
       return()
     }
   }
-
   if(missing(YKernel)){
     message("Parameter YKernel is missing. Returning.")
     return()
@@ -128,36 +121,29 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
       return()
     }
   }
-
   if(length(XKernel) != length(YKernel)){
     message("Parameter XKernel and YKernel must be vectors of same length. Returning.")
     return()
   }
-
   if(!is.list(Shapes)){
     message("Parameter Shapes must be of type list. Returning.")
     return()
   }
-
   if(!is.null(ShapeText)){
     if(!is.matrix(ShapeText)){
       message("Parameter ShapeText is not a logical type. Returning.")
       return()
     }
   }
-
   if(!is.logical(ShowGaussNr)){
     message("Parameter ShowGaussNr is not a logical type. Returning.")
     return()
   }
-
   if(!is.character(Source)){
     message("Parameter Source is not a character type. Returning.")
     return()
   }
-
   #MyPalette = colorRampPalette(colors = c("white", "green"))(2)
-
   # Compute the density for a continuous plot
   #TestGrid = as.matrix(expand.grid(XKernel, YKernel))
   #GMMDensity = 0
@@ -170,7 +156,6 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
   #  GMMDensity = GMMDensity + TmpDensity
   #}
   #GridDensity = matrix(GMMDensity, nrow = length(XKernel), ncol = length(XKernel), byrow = T)
-
   # Colorgradient from white to blue
   #colfunc = colorRampPalette(c("white", "blue"))
   #MyColorGradient = c("#FFFFFF", colfunc(10))
@@ -187,7 +172,6 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
                             source = Source)
   plotOut = plotly::add_contour(p = plotOut,
                                 z = GridDensity)
-
   # Use the Data to estimate a Data Density dot plot
   # Color scales: "Blues", "bilbao"
   #plotOut = plotly::plot_ly(source = Source)
@@ -202,7 +186,6 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
                                text  = ShapeText[,3],
                                textfont = list(color = "white", size = 40))
   }
-
   if(ShowAxis){
     for(i in 1:length(Means)){
       plotOut = plotly::add_markers(p = plotOut,
@@ -252,7 +235,6 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
       }
     }
   }
-
   if(length(Shapes) == length(Means)){
     for(i in 1:length(Means)){
       if(i != CurrGauss){
@@ -262,7 +244,6 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
       }
     }
   }
-
   if(ShowScatter){
     plotOut = plotly::add_markers(p = plotOut,
                                   x = Data[,1],
@@ -270,11 +251,9 @@ plotDensity = function(Data, Cls, CurrGauss, Colors,
                                   color = Colors[Cls[]],
                                   marker = list(size = 3, color = "black"))#, colors = Colors[1:length(unique(Cls))])
   }
-
   if(ShowEllipsoids != TRUE){
     Shapes = NULL
   }
-
   plotOut = plotly::layout(p      = plotOut,
                            title  = "2D Model Density",
                            shapes = Shapes,

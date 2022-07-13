@@ -72,7 +72,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
   # is important to separate between multiple visualizations in the Shiny App.
   #
   # Author: QMS 15.12.2021
-
   if(missing(Data)){
     message("Parameter Data is missing. Returning.")
     return()
@@ -85,7 +84,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(missing(XKernel)){
     message("Parameter XKernel is missing. Returning.")
     return()
@@ -95,7 +93,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(missing(YKernel)){
     message("Parameter YKernel is missing. Returning.")
     return()
@@ -105,17 +102,14 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(length(XKernel) != length(YKernel)){
     message("Parameter XKernel and YKernel must be vectors of same length. Returning.")
     return()
   }
-
   #if((dim(ContinuousDataPDE)[1] != length(YKernel)) | (dim(ContinuousDataPDE)[2] != length(YKernel))){
   #  message("Parameter ContinuousDataPDE must have dimensions the same size as the length of XKernel. Returning.")
   #  return()
   #}
-
   if(missing(EmpiricDataPDE)){
     message("Parameter EmpiricDataPDE is missing. Returning.")
     return()
@@ -125,12 +119,10 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if((dim(Data)[1] != length(EmpiricDataPDE))){
     message("Number of rows of parameter Data must match length of vector EmpiricDataPDE. Returning.")
     return()
   }
-
   if(!is.null(Means)){
     if(!is.list(Means)){
       message("Parameter Means is not of type list. Returning.")
@@ -147,7 +139,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
       }
     }
   }
-
   if(!is.null(Covariances)){
     if(!is.list(Covariances)){
       message("Parameter Cov is not of type list. Returning.")
@@ -164,7 +155,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
       }
     }
   }
-
   if(!is.null(Weights)){
     if(!is.vector(Weights)){
       message("Parameter Weights is not of type vector. Returning.")
@@ -174,7 +164,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(missing(Colors)){
     message("Parameter Colors is missing. Returning.")
     return()
@@ -184,7 +173,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(missing(Cls)){
     message("Parameter Cls is missing. Returning.")
     return()
@@ -194,40 +182,31 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(dim(Data)[1] != length(Cls)){
     message("Number of rows of parameter Data must match length of vector Cls. Returning.")
     return()
   }
-
   if(length(Colors) < length(unique(Cls))){
     message("Length of parameter Colors must be greater than or equal to the number of unique entries in Cls. Returning.")
     return()
   }
-
   if(!is.character(Source)){
     message("Parameter Source is not a character type. Returning.")
     return()
   }
-
   if(is.null(ShowMarkers)){
     ShowMarkers = FALSE
   }
-
   if(!is.logical(Debug)){
     message("Parameter Debug is not a logical type. Returning.")
     return()
   }
-
   if(Debug){
     cat(file = stderr(), "Plot 3D\n")
   }
-
   EmpiricDataPDE = EmpiricDataPDE/sum(EmpiricDataPDE)
-
   MinData = min(Data)
   MaxData = max(Data)
-
   # Compute the density for a density dot plot of the complete GMM model
   plotOut = plotly::plot_ly(source = Source)
   plotOut = plotly::add_trace(p = plotOut,
@@ -236,7 +215,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
                               z = DotDensity,
                               marker = list(color = Colors[Cls], size = 2),
                               type = "scatter3d", mode = "markers")
-
   #if(ShowMarkers){
   if(FALSE){ # Experimental function deactivated
     for(i in 1:length(Means)){
@@ -248,13 +226,11 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
                                                 line = list(color = 'bisque',
                                                             width = 4)),
                                   type = "scatter3d", mode = "markers")
-
       Vi   = RetrieveMainAxesInfoFromGMM(Covariances, MainAxesAngle)
       PC1A = Vi$PC1A
       PC1B = Vi$PC1B
       PC2A = Vi$PC2A
       PC2B = Vi$PC2B
-
       plotOut = plotly::add_trace(p = plotOut,
                                   x = c(Means[[i]][1], Means[[i]][1] + PC1A),
                                   y = c(Means[[i]][2], Means[[i]][2] + PC1B),
@@ -283,7 +259,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
                                                 symbol = "152"))
     }
   }
-
   # Compute the density for a scatter plot of the Data density estimation
   if(ShowScatter == TRUE){
     plotOut = plotly::add_markers(p = plotOut,
@@ -293,8 +268,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
                                   marker = list(size = 1.5,
                                                 color = "black"))
   }
-
-
   plotOut = plotly::event_register(p = plotOut, event = 'plotly_relayout')
   plotOut = plotly::config(p = plotOut, displayModeBar = F)
   plotOut = plotly::hide_colorbar(p = plotOut)
@@ -304,7 +277,6 @@ plotModelDotDensity3D = function(Data, XKernel, YKernel,
   }else{
     Title = "Model PDF"
   }
-
   plotOut = plotly::layout(p = plotOut,
                            title = Title,
                            scene = list(

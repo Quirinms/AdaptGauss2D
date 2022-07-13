@@ -136,14 +136,12 @@ gmix_kurt = function(Parm, Data, Threshold=1.0, Debug=0){
       idxFrom = numColsCholesky*(k-1)+1
       idxTo   = numColsCholesky*k
       tmpvar = Parm$Modes$Covariance[idxFrom:idxTo, ]
-
       # Get Axes
       res_svd = svd(tmpvar)
       S       = res_svd$d
       V       = res_svd$v
       m1 = Parm$Modes$Mean[k,] + V[,jm] * S[jm]/2
       m2 = Parm$Modes$Mean[k,] - V[,jm] * S[jm]/2
-
       Parm$Modes$Weight[k] = wts[k]/2
       Parm$Modes$Weight    = c(Parm$Modes$Weight, wts[k]/2)
       Parm$Modes$Mean[k,]  = m1

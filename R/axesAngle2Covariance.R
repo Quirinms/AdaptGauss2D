@@ -36,7 +36,6 @@ axesAngle2Covariance = function(Variance2D, Angle){
     message("Parameter Angle must be a numeric value. Returning.")
     return()
   }
-
   # Draw ellipse via two axes X,Y with length x,y
   # Rotate ellipse by angle Angle
   # This results in Covariance matrix
@@ -46,11 +45,9 @@ axesAngle2Covariance = function(Variance2D, Angle){
                          sin(Angle/Trafo),  cos(Angle/Trafo))
   RotationMatrix     = matrix(RotMatEntries, ncol = 2, byrow = T)
   CovarianceMatrix2D = RotationMatrix %*% (diag(Variance2D)**2) %*% t(RotationMatrix) # Axes length is sqrt of eigenvalues
-
   #varX1 = majorAxis² * cos(phi)² + minorAxis² * sin(phi)²
   #varX2 = majorAxis² * sin(phi)² + minorAxis² * cos(phi)²
   #cov12 = (majorAxis² - minorAxis²) * sin(phi) * cos(phi)
-
   #Trafo = pi/180
   #CovarianceMatrix2D = matrix(0,2,2)
   #CovarianceMatrix2D[1,1] = Variance2D[1]**2 * cos(Angle*Trafo)**2 + Variance2D[2]**2 * sin(Angle*Trafo)**2

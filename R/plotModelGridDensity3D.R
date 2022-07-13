@@ -71,8 +71,6 @@ plotModelGridDensity3D = function(Data,
   # is important to separate between multiple visualizations in the Shiny App.
   #
   # Author: QMS 15.12.2021
-
-
   if(missing(Data)){
     message("Parameter Data is missing. Returning.")
     return()
@@ -85,7 +83,6 @@ plotModelGridDensity3D = function(Data,
       return()
     }
   }
-
   if(missing(XKernel)){
     message("Parameter XKernel is missing. Returning.")
     return()
@@ -95,7 +92,6 @@ plotModelGridDensity3D = function(Data,
       return()
     }
   }
-
   if(missing(YKernel)){
     message("Parameter YKernel is missing. Returning.")
     return()
@@ -105,17 +101,14 @@ plotModelGridDensity3D = function(Data,
       return()
     }
   }
-
   if(length(XKernel) != length(YKernel)){
     message("Parameter XKernel and YKernel must be vectors of same length. Returning.")
     return()
   }
-
   if((dim(ContinuousDataPDE)[1] != length(YKernel)) | (dim(ContinuousDataPDE)[2] != length(YKernel))){
     message("Parameter ContinuousDataPDE must have dimensions the same size as the length of XKernel. Returning.")
     return()
   }
-
   if(!is.null(Means)){
     if(!is.list(Means)){
       message("Parameter Means is not of type list. Returning.")
@@ -132,7 +125,6 @@ plotModelGridDensity3D = function(Data,
       }
     }
   }
-
   if(!is.null(Covariances)){
     if(!is.list(Covariances)){
       message("Parameter Cov is not of type list. Returning.")
@@ -149,7 +141,6 @@ plotModelGridDensity3D = function(Data,
       }
     }
   }
-
   if(!is.null(Weights)){
     if(!is.vector(Weights)){
       message("Parameter Weights is not of type vector. Returning.")
@@ -159,7 +150,6 @@ plotModelGridDensity3D = function(Data,
       return()
     }
   }
-
   if(missing(Colors)){
     message("Parameter Colors is missing. Returning.")
     return()
@@ -169,35 +159,27 @@ plotModelGridDensity3D = function(Data,
       return()
     }
   }
-
   if(missing(Cls)){
     message("Parameter Cls is missing. Returning.")
     return()
   }
-
-
   if(length(Colors) < length(unique(Cls))){
     message("Length of parameter Colors must be greater than or equal to the number of unique entries in Cls. Returning.")
     return()
   }
-
   if(!is.character(Source)){
     message("Parameter Source is not a character type. Returning.")
     return()
   }
-
   if(!is.logical(Debug)){
     message("Parameter Debug is not a logical type. Returning.")
     return()
   }
-
   if(Debug){
     cat(file = stderr(), "Plot 3D\n")
   }
-
   MinData = min(Data)
   MaxData = max(Data)
-
   #DomainGrid = as.matrix(expand.grid(XKernel, YKernel))
   # Compute the density for a density dot plot
   #GMMDensity = 0
@@ -213,7 +195,6 @@ plotModelGridDensity3D = function(Data,
   #}
   #GMMDensity = GMMDensity/sum(GMMDensity)
   #GMMDensity = t(matrix(data = GMMDensity, nrow = length(XKernel), ncol = length(YKernel)))
-
   colfunc <- colorRampPalette(c("white","black"))
   MyColorGradient = colfunc(10)
   if(requireNamespace("colorRamps"))
@@ -227,12 +208,10 @@ plotModelGridDensity3D = function(Data,
                             type = "surface",
                             colors = MyColorGradient,
                             alpha = 1)
-
   plotOut = plotly::add_surface(p          = plotOut,
                                 z          = GridDensity,
                                 colorscale = list(c(0,1), c("rgb(107,184,255)","rgb(0,90,124)")),
                                 opacity    = 0.6)
-
   plotOut = plotly::hide_colorbar(p = plotOut)
   plotOut = plotly::layout(p          = plotOut,
                            title      = "Model (blue) vs. Emp. Grid Dens.",

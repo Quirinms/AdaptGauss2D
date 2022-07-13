@@ -25,7 +25,6 @@ EstimateNumberOfModes=function(Data,MaxModeNo=7,SampleSize=4000,...){
     warning("EstimateNumberOfModes: SampleSize is expected to be numeric of length one, trying to take first element..")
     SampleSize=SampleSize[1]
   }
-
   n=nrow(Data)
   if(n>SampleSize){
     Data=Data[sample(1:n,SampleSize,replace = F),]
@@ -43,6 +42,5 @@ EstimateNumberOfModes=function(Data,MaxModeNo=7,SampleSize=4000,...){
     ModesNoVec[i]=as.vector(res$ClusterNo)
   }
   ModesNo=round(mean(ModesNoVec,na.rm=TRUE),0)
-
   return(list(ModesNo=ModesNo,ListObj=res))
 }

@@ -23,7 +23,6 @@ plotDataDensity = function(Data, Cls, CurrGauss, Colors,
   # plotOut    Plotly object containing plot for direct visualization.
   #
   # Author: QMS 15.12.2021
-
   if(missing(Data)){
     message("Parameter Data is missing. Returning.")
     return()
@@ -36,12 +35,10 @@ plotDataDensity = function(Data, Cls, CurrGauss, Colors,
       return()
     }
   }
-
   if(missing(Cls)){
     message("Parameter Cls is missing. Returning.")
     return()
   }
-
   if(missing(XKernel)){
     message("Parameter XKernel is missing. Returning.")
     return()
@@ -51,7 +48,6 @@ plotDataDensity = function(Data, Cls, CurrGauss, Colors,
       return()
     }
   }
-
   if(missing(YKernel)){
     message("Parameter YKernel is missing. Returning.")
     return()
@@ -61,7 +57,6 @@ plotDataDensity = function(Data, Cls, CurrGauss, Colors,
       return()
     }
   }
-
   if(length(XKernel) != length(YKernel)){
     message("Parameter XKernel and YKernel must be vectors of same length. Returning.")
     return()
@@ -77,7 +72,6 @@ plotDataDensity = function(Data, Cls, CurrGauss, Colors,
                             source = Source)
   plotOut = plotly::add_contour(p = plotOut,
                                 z = ContinuousDataPDE)
-
   if(ShowAxis){
     for(i in 1:length(Means)){
       plotOut = plotly::add_markers(p = plotOut,
@@ -129,7 +123,6 @@ plotDataDensity = function(Data, Cls, CurrGauss, Colors,
       }
     }
   }
-
   if(ShowScatter){
     plotOut = plotly::add_markers(p = plotOut,
                                   x = Data[,1],
@@ -137,7 +130,6 @@ plotDataDensity = function(Data, Cls, CurrGauss, Colors,
                                   color = Colors[Cls[]],
                                   marker = list(size = 3, color = "black"))#, colors = Colors[1:length(unique(Cls))])
   }
-
   if(length(Shapes) == length(Means)){
     for(i in 1:length(Means)){
       if(i != CurrGauss){
@@ -147,11 +139,9 @@ plotDataDensity = function(Data, Cls, CurrGauss, Colors,
       }
     }
   }
-
   if(ShowEllipsoids != TRUE){
     Shapes = NULL
   }
-
   plotOut = plotly::layout(p      = plotOut,
                            title  = "2D Data Density",
                            shapes = Shapes,

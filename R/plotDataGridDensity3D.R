@@ -38,7 +38,6 @@ plotDataGridDensity3D = function(Data, XKernel, YKernel,
   # plotOut    Plotly object containing plot for direct visualization.
   #
   # Author: QMS 15.12.2021
-
   if(missing(Data)){
     message("Parameter Data is missing. Returning.")
     return()
@@ -51,7 +50,6 @@ plotDataGridDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(missing(XKernel)){
     message("Parameter XKernel is missing. Returning.")
     return()
@@ -61,7 +59,6 @@ plotDataGridDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(missing(YKernel)){
     message("Parameter YKernel is missing. Returning.")
     return()
@@ -71,7 +68,6 @@ plotDataGridDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(missing(ContinuousDataPDE)){
     message("Parameter ContinuousDataPDE is missing. Returning.")
     return()
@@ -81,17 +77,14 @@ plotDataGridDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(length(XKernel) != length(YKernel)){
     message("Parameter XKernel and YKernel must be vectors of same length. Returning.")
     return()
   }
-
   if((dim(ContinuousDataPDE)[1] != length(YKernel)) | (dim(ContinuousDataPDE)[2] != length(YKernel))){
     message("Parameter ContinuousDataPDE must have dimensions the same size as the length of XKernel. Returning.")
     return()
   }
-
   if(missing(EmpiricDataPDE)){
     message("Parameter EmpiricDataPDE is missing. Returning.")
     return()
@@ -101,12 +94,10 @@ plotDataGridDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if((dim(Data)[1] != length(EmpiricDataPDE))){
     message("Number of rows of parameter Data must match length of vector EmpiricDataPDE. Returning.")
     return()
   }
-
   if(missing(Colors)){
     message("Parameter Colors is missing. Returning.")
     return()
@@ -116,7 +107,6 @@ plotDataGridDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(missing(Cls)){
     message("Parameter Cls is missing. Returning.")
     return()
@@ -126,43 +116,33 @@ plotDataGridDensity3D = function(Data, XKernel, YKernel,
       return()
     }
   }
-
   if(dim(Data)[1] != length(Cls)){
     message("Number of rows of parameter Data must match length of vector Cls. Returning.")
     return()
   }
-
   if(length(Colors) < length(unique(Cls))){
     message("Length of parameter Colors must be greater than or equal to the number of unique entries in Cls. Returning.")
     return()
   }
-
   if(!is.logical(ShowScatter)){
     message("Parameter Show3DPoints is not a logical type. Returning.")
     return()
   }
-
   #if(is.null(ShowMarkers)){
   #  ShowMarkers = FALSE
   #}
-
   if(!is.character(Source)){
     message("Parameter Source is not a character type. Returning.")
     return()
   }
-
   if(!is.logical(Debug)){
     message("Parameter Debug is not a logical type. Returning.")
     return()
   }
-
-
   if(Debug){
     cat(file = stderr(), "Plot 3D\n")
   }
-
   EmpiricDataPDE = EmpiricDataPDE/sum(EmpiricDataPDE)
-
   colfunc = colorRampPalette(c("white", "blue"))
   #MyColorGradient = c("#FFFFFF", colfunc(10))
   if(requireNamespace("colorRamps"))

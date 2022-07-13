@@ -63,7 +63,6 @@ the user.
 data(EngyTime)
 # Call shiny application
 Data=EngyTime$Data
-
 Res = AdaptGauss2D(Data, Means = NULL, CovarianceMatrices = NULL, Weights = NULL,
 Cls = NULL, Debug = F)
 }

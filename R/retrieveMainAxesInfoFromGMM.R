@@ -17,7 +17,6 @@ retrieveMainAxesInfoFromGMM = function(Covariance, MainAxesAngle){
   # PC2B    Coordinate of the second main ax in the second dimension of two.
   #
   # Author QS 2021
-
   MySVD = svd(Covariance)                                   # Compute singular value decomposition for Princ. Component Axes
   SD1 = MySVD$d[1]*MySVD$u[,1]                                 # Extract 1st PCA component vector
   SD2 = MySVD$d[2]*MySVD$u[,2]                                 # Extract 2nd PCA component vector
@@ -42,7 +41,6 @@ retrieveMainAxesInfoFromGMM = function(Covariance, MainAxesAngle){
     SD2 = -SD2
   }
   PC1A = SD1[1]; PC1B = SD1[2]; PC2A = SD2[1]; PC2B = SD2[2] # Eigenvector components
-
   return(list("PC1A" = PC1A,
               "PC1B" = PC1B,
               "PC2A" = PC2A,

@@ -178,7 +178,6 @@ init_gmix = function(Data, Nmodes, MinStd, Names=NULL, RandInit=1, Verbose=0){
   }
   return(list(Parm=Parm))
 }
-
 #
 #
 #

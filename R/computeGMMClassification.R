@@ -18,7 +18,6 @@ computeGMMClassification = function(Data, Means, Covariances, Weights){
   #                              all n data points and l classes
   #
   # Author QS 2021
-
   if(missing(Data)){
     message("Parameter Data is missing. Returning.")
     return()
@@ -31,7 +30,6 @@ computeGMMClassification = function(Data, Means, Covariances, Weights){
       return()
     }
   }
-
   if(!is.null(Means)){
     if(!is.list(Means)){
       message("Parameter Means is not of type list. Returning.")
@@ -48,7 +46,6 @@ computeGMMClassification = function(Data, Means, Covariances, Weights){
       }
     }
   }
-
   if(!is.null(Covariances)){
     if(!is.list(Covariances)){
       message("Parameter Cov is not of type list. Returning.")
@@ -65,7 +62,6 @@ computeGMMClassification = function(Data, Means, Covariances, Weights){
       }
     }
   }
-
   if(!is.null(Weights)){
     if(!is.vector(Weights)){
       message("Parameter Weights is not of type vector. Returning.")
@@ -75,7 +71,6 @@ computeGMMClassification = function(Data, Means, Covariances, Weights){
       return()
     }
   }
-
   gDen = sapply(1:length(Means), function(i){       # density for each point and gaussian
     mixtools::dmvnorm(y = Data, mu = Means[[i]], sigma = Covariances[[i]]) * Weights[i]
   })

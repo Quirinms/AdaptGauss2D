@@ -91,4 +91,3 @@ lqr_evp = function(Parm, Data, Flag){
   }
   return(list("LogPDF"=lg, "ModePDFs"=ModePDFs, "PDF"=PDF))
 }
-

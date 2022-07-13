@@ -61,7 +61,6 @@ is important to separate between multiple visualizations in the Shiny App.
 }
 \author{Quirin Stier}
 \examples{
-
 \dontrun{
 data(EngyTime)
 Data = EngyTime

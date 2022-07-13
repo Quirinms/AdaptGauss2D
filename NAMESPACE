@@ -1,15 +1,11 @@
 export(AdaptGauss2D)
 export(EstimateNumberOfModes)
 #export(PmatrixColormap)
-
 import("plotly")
 import("shiny")
 import("shinyWidgets")
-
 importFrom("shinyjs", "disable")
-
 #importFrom("dbt.DataIO", "ReadCLS", "WriteCLS", "WriteLRN")
-
 #importFrom("ggplot2", "ggplot")
 importFrom("grDevices", "colorRampPalette")
 importFrom("stats", "na.omit", "sd")

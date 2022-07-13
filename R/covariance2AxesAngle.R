@@ -20,7 +20,6 @@ covariance2AxesAngle = function(Covariances){
   # the computed angle degrees range from 0 to 360 in counter clock direction.
   #
   # Author QS 2021
-
   if(missing(Covariances)){
     message("Parameter Cov is missing. Returning.")
     return()

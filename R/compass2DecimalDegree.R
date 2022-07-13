@@ -12,7 +12,6 @@ compass2DecimalDegree = function(CompassDegree){
   # DETAILS
   #
   # Author QS 2021
-
   if((CompassDegree >= 0 ) & (CompassDegree <= 90)){
     DecimalDegree = 90 - CompassDegree
   }else if((CompassDegree >= 90 ) & (CompassDegree <= 180)){

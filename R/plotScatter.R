@@ -32,7 +32,6 @@ plotScatter = function(Data, CurrGauss,
   # plotOut    Plotly object containing plot for direct visualization.
   #
   # Author: QMS 15.12.2021
-
   if(missing(Data)){
     message("Parameter Data is missing. Returning.")
     return()
@@ -45,7 +44,6 @@ plotScatter = function(Data, CurrGauss,
       return()
     }
   }
-
   if(!is.null(Means)){
     if(!is.list(Means)){
       message("Parameter Means is not of type list. Returning.")
@@ -62,7 +60,6 @@ plotScatter = function(Data, CurrGauss,
       }
     }
   }
-
   if(!is.null(Covariances)){
     if(!is.list(Covariances)){
       message("Parameter Cov is not of type list. Returning.")
@@ -79,7 +76,6 @@ plotScatter = function(Data, CurrGauss,
       }
     }
   }
-
   if(missing(MainAxesAngle)){
     message("Parameter MainAxesAngle is missing. Returning.")
     return()
@@ -89,7 +85,6 @@ plotScatter = function(Data, CurrGauss,
       return()
     }
   }
-
   if(missing(Colors)){
     message("Parameter Colors is missing. Returning.")
     return()
@@ -99,43 +94,34 @@ plotScatter = function(Data, CurrGauss,
       return()
     }
   }
-
   if(missing(Cls)){
     message("Parameter Cls is missing. Returning.")
     return()
   }
-
   if(dim(Data)[1] != length(Cls)){
     message("Number of rows of parameter Data must match length of vector Cls. Returning.")
     return()
   }
-
   if(length(Colors) < length(unique(Cls))){
     message("Length of parameter Colors must be greater than or equal to the number of unique entries in Cls. Returning.")
     return()
   }
-
   if(!is.list(Shapes)){
     message("Parameter Shapes must be of type list. Returning.")
     return()
   }
-
   if(is.null(ShowAxis)){
     ShowAxis = TRUE
   }
-
   if(!is.character(Source)){
     message("Parameter Source is not a character type. Returning.")
     return()
   }
-
-
   plotOut = plotly::plot_ly(source = Source)
   plotOut = plotly::add_markers(p = plotOut,
                                 x = Data[,1],
                                 y = Data[,2],
                                 marker = list(color = Colors[Cls]), type = "scatter")
-
   if(ShowGaussNr){
     plotOut = plotly::add_text(p = plotOut,
                                x = ShapeText[,1],
@@ -143,7 +129,6 @@ plotScatter = function(Data, CurrGauss,
                                text  = ShapeText[,3],
                                textfont = list(color = "white", size = 40))
   }
-
   if(ShowAxis){
     for(i in 1:length(Means)){
       plotOut = plotly::add_markers(p = plotOut,
@@ -195,7 +180,6 @@ plotScatter = function(Data, CurrGauss,
       }
     }
   }
-
   if(length(Shapes) == length(Means)){
     for(i in 1:length(Means)){
       if(i != CurrGauss){
@@ -205,11 +189,9 @@ plotScatter = function(Data, CurrGauss,
       }
     }
   }
-
   if(ShowEllipsoids != TRUE){
     Shapes = NULL
   }
-
   plotOut = plotly::layout(p      = plotOut,
                            title  = "2D Scatter Plot of Dataset",
                            shapes = Shapes,
@@ -220,6 +202,5 @@ plotScatter = function(Data, CurrGauss,
   plotOut = plotly::hide_colorbar(p = plotOut)
   plotOut = plotly::hide_legend(p = plotOut)
   plotOut = plotly::config(p = plotOut, displayModeBar=F, editable=T)
-
   return(plotOut)
 }

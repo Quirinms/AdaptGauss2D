@@ -88,10 +88,13 @@ gmix_step = function(Parm, Data, Bias=0, DataWTS=NULL){
       w[,i] = exp( w[,i] - mx ) # Verbraucht viel zeit
     }
     nor = rowSums(w)
+    eps = 10**(-5)
+    nor[which(nor <= 0)] = eps # nor can have zero entries and thus must be corrected with eps
     for(i in 1:nmode){
       w[,i] = (DataWTS * w[,i]) / nor
     }
     a = colSums(w)
+    a[which(a <= 0)] = eps 
   }
   # Jetzt gibts Q, w, a
   # Update means
@@ -105,6 +108,9 @@ gmix_step = function(Parm, Data, Bias=0, DataWTS=NULL){
     mean = Parm$Modes$Mean[k,]
     # Subtract mean and scale by weights
     tmpidx = (Data - pracma::repmat(mean, N, 1)) * pracma::repmat(as.matrix(uu), 1, DIM) # Verbraucht viel zeit
+    #tmpidx[is.na(tmpidx)] = 0
+    #print(tmpidx)
+    #print(any(is.na(tmpidx)))
     res_qr = qr(tmpidx)
     q = qr.Q(res_qr)
     tmpvar = qr.R(res_qr)
@@ -141,7 +147,7 @@ gmix_step = function(Parm, Data, Bias=0, DataWTS=NULL){
   for(i in 1:nmode){
     Parm$Modes$Weight[i] = wts[i]
   }
-  return(list(Parm=Parm, "Q"=Q))
+  return(list("Parm" = Parm, "Q" = Q))
 }
 #
 #
