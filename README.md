@@ -27,7 +27,7 @@ Res = AdaptGauss2D(Data = Data, Cls = Cls)
 Please note, that dependecies have to be installed manually.
 
 ```R
-remotes::install_github("Mthrun/AdaptGauss2D")
+remotes::install_github("Quirinms/AdaptGauss2D")
 ```
 
 ## Tutorial Examples
